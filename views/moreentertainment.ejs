@@ -1,0 +1,127 @@
+<div class="lapfinal_postcon">
+   <div class="final_postcon">
+<div class="post_container">
+   <ul class="re_arrange" style="list-style-type: none;margin: 0;padding: 0;">
+         
+    <% data.map(post => { %>
+     
+       <li>
+   
+
+              <a href="/entertainment/<%= post._id %>"> <div class="grid_container">
+                   <div class="item1"><div><img class="latestnewsimg" src=<%="data:image/png;base64,"+ post.img.data.toString("base64") %> alt=""/></div></div>
+                   <div class="item2"><%= post.title %><div class="lead" ><%= post.lead %>...</div>
+                       <div class="ct"> <span id="ct" ><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-comment"></i>0</span><span id="ct" ><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= post.createdAt.toDateString()  %></span></div>
+                       <div class="cat"><span><%= post.category %></span> </div>
+                     </div>
+                   </div>
+                   </a>
+       </li>
+     <hr class="horizontal"/>
+       <% }) %>
+
+
+   </ul>
+   </div> 
+   
+
+
+
+   <div class="pagination">
+    
+  <div class="pagination_shell">
+<% if (page>2) { %>
+ 
+<script>
+   document.addEventListener('DOMContentLoaded',function(){ 
+   document.getElementById('paga').innerHTML =` <li class="prev"><span><a href="/more_entertainment/?page=<%=beforePage%>" <i class="fa-solid fa-angles-left"></i></a></span></li>`;
+      })
+      </script>
+<% } %>
+
+<% if (page>3) { %>
+ 
+ 
+  <script>
+     document.addEventListener('DOMContentLoaded',function(){ 
+     document.getElementById('paga').innerHTML +=` <a href="/more_entertainment/?page=2"><li class="num"><span>1</span></li></a>`;
+        })
+        </script>
+
+<% if (page>5) { %>
+  <script>
+     document.addEventListener('DOMContentLoaded',function(){ 
+     document.getElementById('paga').innerHTML +=`  <li class="dot"><span>...</span></li>`;
+        })
+        </script>
+<% } %>
+
+  <% } %>
+
+
+
+
+<% for( let pageLength = beforePage ; pageLength<= afterPage && pageLength<= totalPages; pageLength++ ) { %>
+    <% let activeLi; %>
+
+  
+  <% if (page-1 == pageLength) { %>
+   <% activeLi="active"%> 
+  <% } %>
+
+   <script>
+
+       document.addEventListener('DOMContentLoaded',function(){ 
+
+       document.getElementById('paga').innerHTML +=`<a href="/more_entertainment/?page=<%=pageLength + 1%>"> <li class="num ${'<%=activeLi%>'}"><span>${'<%=pageLength%>'}</span></li></a>`;
+          })
+          </script>
+
+
+
+<% } %>
+
+
+
+<% if (page<totalPages-1) { %>
+ 
+  <% if (page-2<totalPages) { %>
+     <script>
+        document.addEventListener('DOMContentLoaded',function(){ 
+        document.getElementById('paga').innerHTML +=`  <li class="dot"><span>...</span></li>`;
+           })
+           </script>
+   <% } %>
+
+
+
+  <script>
+     document.addEventListener('DOMContentLoaded',function(){ 
+     document.getElementById('paga').innerHTML +=` <a href="/more_entertainment/?page=<%= totalPages + 1%>"><li class="num"><span>${'<%=totalPages%>'}</span></li></a>`;
+        })
+        </script>
+
+
+  <% } %>
+
+
+
+
+
+
+<% if (page<totalPages) { %>
+ 
+   <script>
+      document.addEventListener('DOMContentLoaded',function(){ 
+      document.getElementById('paga').innerHTML +=`  <li style="margin-left: 3px;" class="next"><span><a href="/more_entertainment/?page=<%=afterPage%>"<i class="fa-solid fa-angles-right"></i></span</li>`;
+         })
+         </script>
+          <% } %>  
+       
+     
+<ul  id="paga" class="ul">
+</ul>
+  </div>
+</div>
+</div>
+</div>

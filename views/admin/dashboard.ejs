@@ -1,0 +1,32 @@
+<div class="main">
+<div class="post_formset">
+<form class="post_form" method="post" action="/uploadlatest"  enctype="multipart/form-data" >
+  <label for="image">Insert Post Image </label>
+  <input type="file" name="newsImage" required>
+  <label for="title">Insert Post Titile</label>
+  <input type="text" id="post_t" name="title" placeholder="Enter post title" required>
+ <label class="t_l" for="title"><div style="display: flex; align-items: center;">Latest News <input type="checkbox" name="lpost" style=" accent-color: black;" value="latestpost" checked></div><div style="display: flex;align-items: center">Top News<input type="checkbox" name="tpost" style=" accent-color: black;" value="toppost"></div></label>
+  <select name="category" id="select" required>
+    <option disabled selected value>Select category</option>
+    <option value="education">Education</option>
+    <option value="politics">Politics</option>
+    <option value="sports">Sports</option>
+    <option value="entertainment">Entertainment</option>
+  </select>
+  <label for="body">Insert Post</label>
+  <textarea  type="text"  name="body" placeholder="Enter post content" required></textarea>
+  <label for="video">Insert Post Video</label>
+  <div class="file_input"><input type="file" name="newsVideo" ></div>
+  <label for="body2">Insert Post 2</label>
+  <textarea type="text" name="body2" placeholder="Enter post content"></textarea>
+  <input class="form_submitbtn" type="submit">
+</form>
+
+</div>
+
+
+
+
+
+
+</div>
