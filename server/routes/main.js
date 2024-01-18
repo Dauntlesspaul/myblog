@@ -198,7 +198,7 @@ router.post('/search',async(req,res)=>{
 
 
 
-router.get('', async(req,res)=>{
+router.get('/', async(req,res)=>{
     const locals = {
         title:"my new blog project",
         description: "a site built with node.js, ejs, express and mongodb",
