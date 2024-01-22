@@ -32,26 +32,7 @@
 
     </ul>
     </div> 
-  <div id="pseudo" class="topnews_set">
-        <div id="pointer"> Top News</div>
-   <div class="topnews_container" >
-       <ul style="list-style-type: none;margin: 0;padding: 0;">
-       <% topP.forEach(singleData => { %>
-       <li >
-        <a href="/toppost/<%= singleData._id %>"> <div class="topnews_frame" >
-                <div class="category"><%=singleData.category%></div>
-                <img class="topnewsimg" src=<%="data:image/png;base64,"+ singleData.img.data.toString("base64") %> alt=""/> 
-                <span style="display:block;width:100%;font-family: var(--headling-text);
-                font-size: 13px;"><%= singleData.title %></span>
-               <div class="lead"><%= singleData.lead %>...</div>
-               <div class="ct"> <span id="ct" ><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-comment"></i>0</span><span id="ct" ><i style="color:rgb(49, 48, 48); margin-right: 2px;;" class="fa-solid fa-clock"></i><%= singleData.createdAt.toDateString()  %></span></div>
-            </div>
-           </a>
-           <br/><hr style="margin-top: -8px;"/>
-           </li>
-            <% }) %>
-       </ul>
-   </div>
+
    
 </div>
 
