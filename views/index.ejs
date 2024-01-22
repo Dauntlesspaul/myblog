@@ -1,296 +1,37 @@
 
  <div class="main">
 
+ <div   id="pointer"  class="hide"> Latest News</div>
 
- <div class="real">
-     <div id="pointer"> Top News</div>
-     <div class="topnews_set">
-    <div class="topnews_container" >
-        <ul style="list-style-type: none;margin: 0;padding: 0;">
-        <% topP.forEach(singleData => { %>
-        <li >
-            <div class="topnews_frame" >
-                <div class="category"><%=singleData.category%></div>
-                <a href="/toppost/<%= singleData._id %>">
-                 <img class="topnewsimg" src=<%="data:image/png;base64,"+ singleData.img.data.toString("base64") %> alt=""/> 
-                 <span style="display:block;width:100%;font-family: var(--headling-text);
-                 font-size: 13px;"><%= singleData.title %></span>
-                <div class="lead"><%= singleData.lead %>...</div>
-                <div class="ct"> <span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px" class="fa-solid fa-comment"></i>0</span><span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= singleData.createdAt.toDateString()  %></span></div>
-            </a>
-            </div>
-            <br/><hr style="margin-top: -8px;"/>
-            </li>
-             <% }) %>
-        </ul>
-    </div>
-    </div>
-    <div class="more_set">
-        <a href="/more_topnews"><div class="more">More</div></a>
-        </div>
-        </div>
-
-
-
-
-        <!--laptop screen_size Entertainment-->
-
-
-        <div class="lapcat_general">
-        <div id="pointer"> Entertainment</div>
-        <div class="lapcategorynews_set">
-         <div class="lapcategorynews_container">
-            <ul  style="list-style-type: none;margin: 0;padding: 0; display:flex;">
-             <% entertainmenT.forEach(post => { %>
-              
-                <li>
-            
-        
-                        <a href="/entertainment/<%= post._id %>"><div class="grid_container">
-                            <div class="item1"><div><img class="latestnewsimg" src=<%="data:image/png;base64,"+ post.img.data.toString("base64") %> alt=""/></div></div>
-                            <div class="item2"><%= post.title %><div class="lead" ><%= post.lead %>...</div>
-                                <div class="ct"> <span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px" class="fa-solid fa-comment"></i>0</span><span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= post.createdAt.toDateString()  %></span></div>
-                                        <div class="cat"><span><%= post.category %></span> </div>
-                                    </div>
-                            </div>
-                        </a>
-                </li>
-              <hr/>
-                <% }) %>
-           
-            </ul>
-            </div> 
-        </div>
-        <div  class="more_set">
-            <a  href="/more_entertainment"> <div  style="float: right;margin-right: 28px;" class="more">More</div></a>
-            </div>
-
-
-   <!--laptop screen_size Education-->
-
-
-    <div id="pointer"> Education</div>
-    <div class="lapcategorynews_set">
-     <div class="lapcategorynews_container">
-        <ul  style="list-style-type: none;margin: 0;padding: 0; display:flex;">
-         <% educatioN.forEach(post => { %>
-          
-            <li>
-        
+ <div class="latestnews_set">
+ <div class="latestnews_container">
+    <ul class="re_arrange" style="list-style-type: none;margin: 0;padding: 0;">
+        <div class="laptop_pointerset">
+            <div id="laptop_pointer"> Latest News</div>
+           </div>
+     <% data.map(post => { %>
+      
+        <li>
     
-                    <a href="/education/<%= post._id %>"><div class="grid_container">
-                        <div class="item1"><div><img class="latestnewsimg" src=<%="data:image/png;base64,"+ post.img.data.toString("base64") %> alt=""/></div></div>
-                        <div class="item2"><%= post.title %><div class="lead" ><%= post.lead %>...</div>
-                            <div class="ct"> <span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px" class="fa-solid fa-comment"></i>0</span><span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= post.createdAt.toDateString()  %></span></div>
+
+               <a href="/latestpost/<%= post._id %>"> <div class="grid_container">
+                    <div class="item1"><div><img class="latestnewsimg" src=<%="data:image/png;base64,"+ post.img.data.toString("base64") %> alt=""/></div></div>
+                    <div class="item2"><%= post.title %><div class="lead" ><%= post.lead %>...</div>
+                        <div class="ct"><span id="ct" ><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-comment"></i>0</span><span id="ct" ><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= post.createdAt.toDateString()  %></span></div>
                                 <div class="cat"><span><%= post.category %></span> </div>
                             </div>
                         </div>
                     </a>
-            </li>
-          <hr/>
-            <% }) %>
-       
-        </ul>
-        </div> 
-    </div>
-    <div  class="more_set">
-        <a  href="/more_education"> <div  style="float: right;margin-right: 28px;" class="more">More</div></a>
-        </div>
+        </li>
+      <hr class="horizontal"/>
+        <% }) %>
 
-
-
-
-
-
-
-
-
-     <!--laptop screen_size Politics-->
-
-
-
-     <div id="pointer"> Politics</div>
-     <div class="lapcategorynews_set">
-      <div class="lapcategorynews_container">
-         <ul  style="list-style-type: none;margin: 0;padding: 0; display:flex;">
-          <% politicS.forEach(post => { %>
-           
-             <li>
-         
-     
-                     <a href="/politics/<%= post._id %>"><div class="grid_container">
-                         <div class="item1"><div><img class="latestnewsimg" src=<%="data:image/png;base64,"+ post.img.data.toString("base64") %> alt=""/></div></div>
-                         <div class="item2"><%= post.title %><div class="lead" ><%= post.lead %>...</div>
-                             <div class="ct"> <span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px" class="fa-solid fa-comment"></i>0</span><span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= post.createdAt.toDateString()  %></span></div>
-                                <div class="cat"><span><%= post.category %></span> </div>
-                            </div>
-                         </div>
-                    </a>
-             </li>
-           <hr/>
-             <% }) %>
-        
-         </ul>
-         </div> 
-     </div>
-     <div class="more_set">
-        <a href="/more_politics"><div  style="float:right;margin-right: 28px;" class="more">More</div></a>
-    </div>
-
-
-             <!--laptop screen_size Sports-->
-
-
-
-             <div id="pointer"> Sports</div>
-             <div class="lapcategorynews_set">
-              <div class="lapcategorynews_container">
-                 <ul  style="list-style-type: none;margin: 0;padding: 0; display:flex;">
-                  <% sportS.forEach(post => { %>
-                   
-                     <li>
-                 
-             
-                            <a href="/sports/<%= post._id %>"> <div class="grid_container">
-                                 <div class="item1"><div><img class="latestnewsimg" src=<%="data:image/png;base64,"+ post.img.data.toString("base64") %> alt=""/></div></div>
-                                 <div class="item2"><%= post.title %><div class="lead" ><%= post.lead %>...</div>
-                                     <div class="ct"> <span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px" class="fa-solid fa-comment"></i>0</span><span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= post.createdAt.toDateString()  %></span></div>
-                                        <div class="cat"><span><%= post.category %></span> </div>
-                                       </div>
-                                 </div>
-                            </a>
-                     </li>
-                   <hr/>
-                     <% }) %>
-                
-                 </ul>
-                 </div> 
-             </div>
-             <div class="more_set">
-                <a  href="/more_sports"><div  style="float:right;margin-right: 28px;" class="more">More</div></a>
-            </div>
+        <div  class="more_lnews">
+            <a  href="/more_latestnews"><div style="margin-left:0px;" class="more">More</div></a>
             </div>
 
-
-<!--Entertainment-->
-<div id="mobile_category" >
-<div id="pointer"> Entertainment</div>
-<div class="latestnews_set">
- <div class="latestnews_container">
-    <ul style="list-style-type: none;margin: 0;padding: 0;">
-     <% entertainmenT.forEach(post => { %>
-      
-        <li>
-    
-
-               <a href="/entertainment/<%= post._id %>"> <div class="grid_container">
-                    <div class="item1"><div><img class="latestnewsimg" src=<%="data:image/png;base64,"+ post.img.data.toString("base64") %> alt=""/></div></div>
-                    <div class="item2"><%= post.title %><div class="lead" ><%= post.lead %>...</div>
-                        <div class="ct"> <span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px" class="fa-solid fa-comment"></i>0</span><span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= post.createdAt.toDateString()  %></span></div>
-                            <div class="cat"><span><%= post.category %></span> </div>
-                        </div>
-                    </div>
-                </a>
-        </li>
-      <hr/>
-        <% }) %>
-   
     </ul>
     </div> 
-</div>
-<div class="more_set">
-    <a  href="/more_entertainment"><div class="more">More</div></a>
-    </div>
-
-
-<!--Educatiion-->
-    <div id="pointer"> Education</div>
-    <div class="latestnews_set">
-     <div class="latestnews_container">
-        <ul style="list-style-type: none;margin: 0;padding: 0;">
-         <% educatioN.forEach(post => { %>
-          
-            <li>
-        
-    
-                   <a href="/education/<%= post._id %>"> <div class="grid_container">
-                        <div class="item1"><div><img class="latestnewsimg" src=<%="data:image/png;base64,"+ post.img.data.toString("base64") %> alt=""/></div></div>
-                        <div class="item2"><%= post.title %><div class="lead" ><%= post.lead %>...</div>
-                            <div class="ct"> <span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px" class="fa-solid fa-comment"></i>0</span><span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= post.createdAt.toDateString()  %></span></div>
-                             <div class="cat"><span><%= post.category %></span> </div>
-                         </div>
-                        </div>
-                    </a>
-            </li>
-          <hr/>
-            <% }) %>
-       
-        </ul>
-        </div> 
-    </div>
-    <div class="more_set">
-        <a  href="/more_education"><div class="more">More</div></a>
-        </div>
-
-
-
-
-<!--Politics-->
-<div id="pointer"> Politics</div>
-<div class="latestnews_set">
- <div class="latestnews_container">
-    <ul style="list-style-type: none;margin: 0;padding: 0;">
-     <% politicS.forEach(post => { %>
-      
-        <li>
-    
-
-                <a href="/politics/<%= post._id %>"><div class="grid_container">
-                    <div class="item1"><div><img class="latestnewsimg" src=<%="data:image/png;base64,"+ post.img.data.toString("base64") %> alt=""/></div></div>
-                    <div class="item2"><%= post.title %><div class="lead" ><%= post.lead %>...</div>
-                        <div class="ct"> <span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px" class="fa-solid fa-comment"></i>0</span><span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= post.createdAt.toDateString()  %></span></div>
-                        <div class="cat"><span><%= post.category %></span> </div>
-                    </div>
-                    </div>
-                </a>
-        </li>
-      <hr/>
-        <% }) %>
-   
-    </ul>
-    </div> 
-</div>
-<div class="more_set">
-    <a style="color:white" href="/more_politics"><div class="more">More</div></a>
-    </div>
-<!--Sports-->
-<div id="pointer"> Sports</div>
-<div class="latestnews_set">
- <div class="latestnews_container">
-    <ul style="list-style-type: none;margin: 0;padding: 0;">
-     <% sportS.forEach(post => { %>
-      
-        <li>
-    
-
-                <a href="/sports/<%= post._id %>"><div class="grid_container">
-                    <div class="item1"><div><img class="latestnewsimg" src=<%="data:image/png;base64,"+ post.img.data.toString("base64") %> alt=""/></div></div>
-                    <div class="item2"><%= post.title %><div class="lead" ><%= post.lead %>...</div>
-                    <div class="ct"> <span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px" class="fa-solid fa-comment"></i>0</span><span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= post.createdAt.toDateString()  %></span></div>
-                    <div class="cat"><span><%= post.category %></span> </div>
-                </div>  
-                </div>
-                </a>
-        </li>
-      <hr/>
-        <% }) %>
-   
-    </ul>
-    </div> 
-</div>
-<div class="more_set">
-    <a href="/more_sports"><div class="more">More</div></a>
-    </div>
 </div>
  
 
