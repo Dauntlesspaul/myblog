@@ -34,6 +34,96 @@
     </div> 
 </div>
  
+<div class="latestnews_set">
+ <div class="latestnews_container">
+    <ul class="re_arrange" style="list-style-type: none;margin: 0;padding: 0;">
+        <div class="laptop_pointerset">
+            <div id="laptop_pointer"> Latest News</div>
+           </div>
+     <% data.map(post => { %>
+      
+        <li>
+    
 
+               <a href="/latestpost/<%= post._id %>"> <div class="grid_container">
+                    <div class="item1"><div><img class="latestnewsimg" src=<%="data:image/png;base64,"+ post.img.data.toString("base64") %> alt=""/></div></div>
+                    <div class="item2"><%= post.title %><div class="lead" ><%= post.lead %>...</div>
+                        <div class="ct"><span id="ct" ><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-comment"></i>0</span><span id="ct" ><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= post.createdAt.toDateString()  %></span></div>
+                                <div class="cat"><span><%= post.category %></span> </div>
+                            </div>
+                        </div>
+                    </a>
+        </li>
+      <hr class="horizontal"/>
+        <% }) %>
+
+        <div  class="more_lnews">
+            <a  href="/more_latestnews"><div style="margin-left:0px;" class="more">More</div></a>
+            </div>
+
+    </ul>
+    </div> 
+</div>
+ <div class="latestnews_set">
+ <div class="latestnews_container">
+    <ul class="re_arrange" style="list-style-type: none;margin: 0;padding: 0;">
+        <div class="laptop_pointerset">
+            <div id="laptop_pointer"> Latest News</div>
+           </div>
+     <% data.map(post => { %>
+      
+        <li>
+    
+
+               <a href="/latestpost/<%= post._id %>"> <div class="grid_container">
+                    <div class="item1"><div><img class="latestnewsimg" src=<%="data:image/png;base64,"+ post.img.data.toString("base64") %> alt=""/></div></div>
+                    <div class="item2"><%= post.title %><div class="lead" ><%= post.lead %>...</div>
+                        <div class="ct"><span id="ct" ><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-comment"></i>0</span><span id="ct" ><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= post.createdAt.toDateString()  %></span></div>
+                                <div class="cat"><span><%= post.category %></span> </div>
+                            </div>
+                        </div>
+                    </a>
+        </li>
+      <hr class="horizontal"/>
+        <% }) %>
+
+        <div  class="more_lnews">
+            <a  href="/more_latestnews"><div style="margin-left:0px;" class="more">More</div></a>
+            </div>
+
+    </ul>
+    </div> 
+</div>
+ <div class="latestnews_set">
+ <div class="latestnews_container">
+    <ul class="re_arrange" style="list-style-type: none;margin: 0;padding: 0;">
+        <div class="laptop_pointerset">
+            <div id="laptop_pointer"> Latest News</div>
+           </div>
+     <% data.map(post => { %>
+      
+        <li>
+    
+
+               <a href="/latestpost/<%= post._id %>"> <div class="grid_container">
+                    <div class="item1"><div><img class="latestnewsimg" src=<%="data:image/png;base64,"+ post.img.data.toString("base64") %> alt=""/></div></div>
+                    <div class="item2"><%= post.title %><div class="lead" ><%= post.lead %>...</div>
+                        <div class="ct"><span id="ct" ><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-comment"></i>0</span><span id="ct" ><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= post.createdAt.toDateString()  %></span></div>
+                                <div class="cat"><span><%= post.category %></span> </div>
+                            </div>
+                        </div>
+                    </a>
+        </li>
+      <hr class="horizontal"/>
+        <% }) %>
+
+        <div  class="more_lnews">
+            <a  href="/more_latestnews"><div style="margin-left:0px;" class="more">More</div></a>
+            </div>
+
+    </ul>
+    </div> 
+</div>
+ 
 
 </div>
