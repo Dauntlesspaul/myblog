@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const fs = require('fs');
+const fs = require('@cyclic.sh/s3fs')(S3_BUCKET_NAME);
 const Latestpost = require('../models/post');
 const Toppost = require('../models/topnews')
 
