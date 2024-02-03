@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@cyclic.sh/s3fs": "^1.2.9",
+    "aws-sdk": "^2.1550.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "connect-mongo": "^5.1.0",
