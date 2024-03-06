@@ -2,13 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-<<<<<<< HEAD
-=======
-const fs = require('@cyclic.sh/s3fs')(process.env.BUCKET);
->>>>>>> c000662e3ba75228be1ae721dfb4aa04b1b6d6c2
 const Latestpost = require('../models/post');
 const Toppost = require('../models/topnews')
-const fs = require('@cyclic.sh/s3fs')(process.env.BUCKET)
+const fs = require('fs')
+
+
 
 const storage = multer.diskStorage({ 
     destination:(req,file,cb)=>{
@@ -20,7 +18,8 @@ const storage = multer.diskStorage({
 })
 const upload =multer({storage:storage});
 
-router.post('/uploadlatest',upload.fields([{ name: 'newsImage', maxCount: 1 },  { name: 'newsVideo', maxCount: 8 }]),(req,res)=>{
+router.post('/uploadlatest',upload.fields([{ name: 'newsImage', maxCount: 1 },  { name: 'newsVideo', maxCount: 8 }]),async(req,res)=>{
+
     const newsLead = req.body.body;
     const newsLead_array =newsLead.split(' ').splice(0,12);
     const finalLead = newsLead_array.join(' ')
