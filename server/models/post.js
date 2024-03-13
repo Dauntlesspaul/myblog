@@ -37,4 +37,5 @@ const PostSchema = new Schema({
     default:Date.now
     }
 })
+PostSchema.index({ createdAt: 1})
 module.exports = mongoose.model("Latestpost",PostSchema)

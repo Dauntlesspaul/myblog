@@ -32,7 +32,7 @@
         
 
 <div class="related_con">
- <div id="pointer">Related news</div>
+ <div id="pointer">RELATED NEWS</div>
  <div class="rl_container">
  <div class="related_newsbody">
    <ul style="list-style-type: none;margin: 0;padding: 0; ">
@@ -44,8 +44,8 @@
              <a href="/education/<%= related._id %>"> <div class="grid_container">
                   <div class="item1"><div><img class="latestnewsimg" src=<%="data:image/png;base64,"+ related.img.data.toString("base64") %> alt=""/></div></div>
                   <div class="item2"><%= related.title %><div class="lead" ><%= related.lead %>...</div>
-                      <div class="ct"> <span id="ct" ><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-comment"></i>0</span><span id="ct" ><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= related.createdAt.toDateString()  %></span></div>
-                      <div class="cat"><span><%= related.category %></span> </div>
+                      <div class="ct"><span id="ct" ><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= related.createdAt.toDateString()  %></span></div>
+                      <div class="cat"><span><%=  related.category[0].toUpperCase() + related.category.slice(1) %></span> </div>
                     </div>
                   </div>
                   </a>

@@ -1,25 +1,31 @@
-<div class="lap_pull"> <div id="myNav" class="pull"> 
-    <div onclick="close_btn()" id="close_btn" ><i class="fa-regular fa-circle-xmark"></i></div>
-    <div id="content_set" class="content_set">
-    <div  class="content">
-    <a class="display"  href="/dashboard" id="anc"><span class="<%= locals.select %>">Admin Panel</span></a>
-    <a class="display" href="/all_latest_posts" id="anc"><span class="<%= locals.selects %>">All latest posts</span></a>
-    <a class="display"  href="/all_top_posts" id="anc"><span class="<%= locals.selected %>">All Top posts</span></a>
-     <a class="display"  href="/logout" id="anc">Logout</a>
-    </div>
-    </div>
- </div>
-</div>
 
-<header class="header">
+
+<header>
+
+    <div class="lap_pull"> <div id="myNav" class="pull"> 
+        <div onclick="close_btn()" id="close_btn" ><i style="cursor: pointer;" class="fa-regular fa-circle-xmark"></i></div>
+        <div id="content_set" class="content_set">
+        <div  class="content">
+        <a class="display"  href="/dashboard" id="anc"><span class="<%= locals.select %>">Admin Panel</span></a>
+        <a class="display" href="/all_latest_posts" id="anc"><span class="<%= locals.selects %>">All latest posts</span></a>
+        <a class="display"  href="/all_top_posts" id="anc"><span class="<%= locals.selected %>">All Top posts</span></a>
+         <a class="display"  href="/logout" id="anc">Logout</a>
+        </div>
+        </div>
+     </div>
+    </div>
+
+
+    <div class="nav_bar">
  <div class="<%= locals.hide %>">
+    <div class="header-search">
 <div id="header_container" class="header_container"> 
-<div class="curtain"><i id="bar" onclick="open_btn()" class="fa-solid fa-bars"></i></div>
-<div class="name">Admin Panel</div>
-<div class="search"><i onclick="clearHeader()" id="search" class="fa-solid fa-magnifying-glass"></i></div>
+<div class="curtain"><i style="cursor: pointer;" id="bar" onclick="open_btn()" class="fa-solid fa-bars"></i></div>
+<div class="name"><span ><img src="/img/20240308_155725.png " style="width:100px" alt="grid news logo"></span></div>
+<div class="search"><i style="cursor: pointer;" onclick="clearHeader()" id="search" class="fa-solid fa-magnifying-glass"></i></div>
 </div> 
 
- <div class="lap_v"><div id="mobile_search">
+ <div id="mobile_search">
      <div style="display: flex; align-items: center; width: 350px;justify-content: space-between;">
     <div class=" input">
         <form class="sbtn_container" method="post" action="/search"  role="search">
@@ -28,11 +34,12 @@
         </form>
 </div> <span><i onclick="showHeader()" class="fa-solid fa-circle-xmark" style="color: #2c2d30;font-size: 40px;"></i></span>
  </div>
- </div></div>
+ </div>
+</div>
 <!--laptop Screen size-->
 <div class="lapheader_containerset">
 <div class="lapheader_container">
-<div class="lapname ">Dauntless</div>
+<div class="lapname "><span ><img src="/img/20240308_155725.png " style="width:100px" alt="grid news logo"></span></div>
 <div class="home"><a href="/dashboard" id="anc"><span class="<%= locals.select %>">Admin Panel</span></a></div>
 <div class="poli"><a href="/logout" id="anc"><span class="<%= locals.selectp %>">Logout</span></a></div>
 <div class="spor"><a href="/all_latest_posts" id="anc"><span class="<%= locals.selects %>">All latest posts</span></a></div>
@@ -45,5 +52,6 @@
 </div>
 </div>
 </div>
-<div style="color:white; text-align: center;font-size: 18px;" class="<%= locals.hide2%>"><span >Admin Login</span></div>
+<div style="color:white; text-align: center;font-size: 18px;" class="<%= locals.hide2%>"><span ><img src="/img/20240308_155725.png " style="width:100px" alt="grid news logo"></span></div>
+</div>
 </header>

@@ -1,49 +1,52 @@
-<div class="lap_pull"> <div id="myNav" class="pull"> 
-    <div onclick="close_btn()" id="close_btn" ><i class="fa-regular fa-circle-xmark"></i></div>
-    <div id="content_set" class="content_set">
-    <div  class="content">
-    <a class="display"  href="/" id="anc"><span class="<%= locals.select %>">Home</span></a>
-    <a class="display" href="/allpolitics" id="anc"><span class="<%= locals.selectp %>">Politics</span></a>
-    <a class="display"  href="/allsports" id="anc"><span class="<%= locals.selects %>">Sports</span></a>
-     <a class="display"  href="/alleducation" id="anc"><span class="<%= locals.selected %>">Education</span></a>
-     <a class="display"  href="/allentertainment" id="anc"><span class="<%= locals.selecten %>">Entertainment</span></a>
-    </div>
-    </div>
- </div>
-</div>
 
-<header class="header">
-    
+<header>
+    <div class="lap_pull"> <div id="myNav" class="pull"> 
+        <div onclick="close_btn()" id="close_btn" ><i style="cursor: pointer;" class="fa-regular fa-circle-xmark"></i></div>
+         <div id="content_set" class="content_set">
+          <div  class="content">
+            <a class="display"  href="/" id="anc"><span class="<%= locals.select %>">Home</span></a>
+            <a class="display"  href="/allpolitics" id="anc"><span class="<%= locals.selectp %>">Politics</span></a>
+            <a class="display"  href="/allsports" id="anc"><span class="<%= locals.selects %>">Sports</span></a>
+            <a class="display"  href="/alleducation" id="anc"><span class="<%= locals.selected %>">Education</span></a>
+            <a class="display"  href="/allentertainment" id="anc"><span class="<%= locals.selecten %>">Entertainment</span></a>
+        </div>
+       </div>
+     </div>
+    </div>
+
+<div class="nav_bar">
+ <div class="header-search">
 <div id="header_container" class="header_container"> 
-<div class="curtain"><i id="bar" onclick="open_btn()" class="fa-solid fa-bars"></i></div>
-<div class="name">GRID NEWS</div>
-<div class="search"><i onclick="clearHeader()" id="search" class="fa-solid fa-magnifying-glass"></i></div>
+<div class="curtain"><i id="bar" style="cursor: pointer;" onclick="open_btn()" class="fa-solid fa-bars"></i></div>
+<div class="name"><a href="/"><img src="/img/20240308_155725.png" alt="grid news logo"></a></div>
+<div class="search"><i style="cursor: pointer;" onclick="clearHeader()" id="search" class="fa-solid fa-magnifying-glass"></i></div>
 </div> 
 
- <div class="lap_v"><div id="mobile_search">
+ <div id="mobile_search">
      <div style="display: flex; align-items: center; width: 350px;justify-content: space-between;">
     <div class=" input">
         <form class="sbtn_container" method="post" action="/search"  role="search">
-        <input type="text" placeholder="Search" id="searchbar" value="" name="searchValue">
+        <input type="text" placeholder="Search" id="searchbar" value="" name="searchValue" required>
         <button type="submit" class="circle"><i class="fa-solid fa-magnifying-glass" style="color: #0a0e15;margin-left: 2px;font-size: 20px;"></i> </button>
         </form>
 </div> <span><i onclick="showHeader()" class="fa-solid fa-circle-xmark" style="color: #2c2d30;font-size: 40px;"></i></span>
  </div>
- </div></div>
+ </div>
+</div>
 <!--laptop Screen size-->
 <div class="lapheader_containerset">
 <div class="lapheader_container">
-<div class="lapname ">GRID NEWS</div>
+<div class="lapname "><img src="/img/20240308_155725.png" alt="grid news logo"></div>
 <div class="home"><a href="/" id="anc"><span class="<%= locals.select %>">Home</span></a></div>
 <div class="poli"><a href="/allpolitics" id="anc"><span class="<%= locals.selectp %>">Politics</span></a></div>
 <div class="spor"><a href="/allsports" id="anc"><span class="<%= locals.selects %>">Sports</span></a></div>
 <div class="edu"><a href="/alleducation" id="anc"><span class="<%= locals.selected %>">Education</span></a></div>
 <div class="ent"><a href="/allentertainment" id="anc"><span class="<%= locals.selecten %>">Entertainment</span></a></div>
 <div class=" input"><form class="sbtn_container"  method="post" action="/search"  role="search">
-    <input  type="text" placeholder="Search" id="searchbar" value="" name="searchValue">
+    <input  type="text" placeholder="Search" id="searchbar" value="" name="searchValue" required>
     <button type="submit" class="circle"><i class="fa-solid fa-magnifying-glass" style="color: #0a0e15;margin-left: 6px;font-size:20px;"></i> </button>
 </form></div>
 </div>
 </div>
-
+</div>
 </header>
