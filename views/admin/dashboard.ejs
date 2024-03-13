@@ -21,10 +21,15 @@
   </select>
   <label for="body">Post Content</label>
   <textarea  type="text"  name="body" placeholder="Enter post content" required></textarea>
-  <label>Select Video</label>
+  <label>Add Video</label>
   <div class="file_name"><label for="video"><img style="cursor: pointer;" src="/img/video-solid.svg" alt="video icon"></label><span id="video-name" style="color:#a00202;font-size: 10px;">&nbsp;no file selected</span></div>
   <div class="file_input"><input type="file" onchange="displayFileName(this.value,this.id)" id="video" name="newsVideo" ></div>
-  <label for="body2">Additional Post Content </label>
+  <label>Add image</label>
+  <div class="file_name"><label style="cursor: pointer;" for="addimage"><img src="/img/image-solid.svg"> </label> <span id="file_name2" style="color:#a00202;font-size: 10px;">&nbsp;no file selected</span></div>
+  <input type="file" onchange="displayFileName(this.value,this.id)" id="addimage" name="addnewsImage" >
+  <label for="link">Link </label>
+  <input id="link" type="text" id="link" name="link" placeholder="Enter link">
+  <label for="body2">Add More Content </label>
   <textarea type="text" name="body2" placeholder="Enter post content"></textarea>
   <button class="form_submitbtn" type="submit">UPLOAD <span><img   src="/img/upload-solid.svg" alt="upload icon" style="color: white; width: 16px;"></span></button>
 </form>

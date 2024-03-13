@@ -11,6 +11,9 @@ function displayFileName(value,id){
  if(myId=='image'){
  document.getElementById('file_name').innerHTML= `&nbsp ${name}`
  }
+ else if(myId=='addimage'){
+    document.getElementById('file_name2').innerHTML= `&nbsp ${name}` 
+ }
  else{
     document.getElementById('video-name').innerHTML= `&nbsp ${name}` 
  }

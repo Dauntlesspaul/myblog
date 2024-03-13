@@ -5,6 +5,8 @@
 <form class="post_form" method="post" action="/repost/<%= data._id %>" >
   <label for="title">Post Titile</label>
   <input type="text" id="post_t" name="title" placeholder="Enter post title" value="<%= data.title %>" required>
+  <label for="link">link</label>
+  <input type="text" id="link" name="link" placeholder="Enter link" value="<%= data.link %>" >
   <label for="body">Post Content</label>
   <textarea  type="text"  name="body" placeholder="Enter post content" required><%=data.body %></textarea>
   <label for="body2">Additional Post Content </label>
