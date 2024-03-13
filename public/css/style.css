@@ -707,7 +707,7 @@ button{
     display: flex;
     justify-content: center;
   }
-  #post_t{
+ #link, #post_t{
     width: 100% !important;
     padding:0 10px;
     margin: 0 !important;

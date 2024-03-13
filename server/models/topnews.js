@@ -9,6 +9,13 @@ const TopPostSchema = new Schema({
         data:Buffer,
         contentType: String,
         },
+        img2:{
+        data:Buffer,
+        contentType: String
+        },
+        link:{
+        type:String
+        },
         title:{
         type:String,
         required:true
