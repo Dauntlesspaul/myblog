@@ -36,18 +36,34 @@ const upload =multer({storage:storage});
 
 
 
-router.post('/uploadlatest',upload.fields([{ name: 'newsImage', maxCount: 1 },  { name: 'newsVideo', maxCount: 8 }]),async(req,res)=>{
-
+router.post('/uploadlatest',upload.fields([{ name: 'newsImage', maxCount: 1 },  { name: 'newsVideo', maxCount: 1 }, { name: 'addnewsImage', maxCount: 1 }]),async(req,res)=>{
+    const str = req.body.link;
+    const regexHttp = /https:/g;
+    const regexHttp2 =/www/g;
+    const regTest = regexHttp.test(str)
+    const regTest2 = regexHttp2.test(str)
+    var link;
+    
+    if(!regTest && !regTest){
+        link ="https://www."+str
+    }
+   else if(regTest){
+        link = str
+      }
     const newsLead = req.body.body;
     const newsLead_array =newsLead.split(' ').splice(0,12);
     const finalLead = newsLead_array.join(' ')
  if(req.body.tpost=="toppost"){
-    if(req.files['newsVideo'] !== undefined){
+    if(req.files['newsVideo'] !== undefined && req.files['addnewsImage'] !== undefined ){
     const saveToppost = new Toppost({
         img:{
         data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
         contentType:"image/png"
         },
+        img2:{
+            data: fs.readFileSync('uploads/' + req.files['addnewsImage'][0].filename),
+            contentType:"image/png"
+            },
         vid:{
             data: fs.readFileSync('uploads/' + req.files['newsVideo'][0].filename),
             contentType:"image/png"
@@ -56,6 +72,7 @@ router.post('/uploadlatest',upload.fields([{ name: 'newsImage', maxCount: 1 },  
         body:req.body.body,
         body2:req.body.body2,
         category:req.body.category,
+        link:link,
         lead:finalLead
     })
     saveToppost.save()
@@ -65,6 +82,10 @@ router.post('/uploadlatest',upload.fields([{ name: 'newsImage', maxCount: 1 },  
         data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
         contentType:"image/png"
         },
+        img2:{
+            data: fs.readFileSync('uploads/' + req.files['addnewsImage'][0].filename),
+            contentType:"image/png"
+            },
         vid:{
             data: fs.readFileSync('uploads/' + req.files['newsVideo'][0].filename),
             contentType:"image/png"
@@ -73,6 +94,7 @@ router.post('/uploadlatest',upload.fields([{ name: 'newsImage', maxCount: 1 },  
         body:req.body.body,
         body2:req.body.body2,
         category:req.body.category,
+        link:link,
         lead:finalLead
 })
 saveLatestpost.save()
@@ -95,7 +117,117 @@ saveLatestpost.save()
     console.log(err)
 })
     }
-else{
+else if (req.files['newsVideo'] !== undefined && req.files['addnewsImage'] == undefined){
+    const saveToppost = new Toppost({
+        img:{
+        data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
+        contentType:"image/png"
+        },
+        vid:{
+            data: fs.readFileSync('uploads/' + req.files['newsVideo'][0].filename),
+            contentType:"image/png"
+            },
+        title:req.body.title,
+        body:req.body.body,
+        body2:req.body.body2,
+        category:req.body.category,
+        link:link,
+        lead:finalLead
+    })
+    saveToppost.save()
+   console.log('post is included in top news')
+   const saveLatestpost = new Latestpost({
+    img:{
+        data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
+        contentType:"image/png"
+        },
+        vid:{
+            data: fs.readFileSync('uploads/' + req.files['newsVideo'][0].filename),
+            contentType:"image/png"
+            },
+        title:req.body.title,
+        body:req.body.body,
+        body2:req.body.body2,
+        category:req.body.category,
+        link:link,
+        lead:finalLead
+})
+saveLatestpost.save()
+.then(()=>{
+    const filesToBeDeleted = Object.keys(req.files)
+    for(var i = 0; i<filesToBeDeleted.length;i++){
+    const path = req.files[filesToBeDeleted[i]][0].path
+    fs.unlink(path, (err) => {
+        if (err) {
+          console.error(err)
+          return;
+        }
+        console.log('image and video removed')
+      })
+    console.log('file is saved')
+    }
+    res.redirect('/all_latest_posts')
+})
+.catch((err)=>{
+    console.log(err)
+})
+}
+ else if(req.files['newsVideo'] == undefined && req.files['addnewsImage'] !== undefined){
+    const saveToppost = new Toppost({
+        img:{
+        data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
+        contentType:"image/png"
+        },
+        img2:{
+            data: fs.readFileSync('uploads/' + req.files['addnewsImage'][0].filename),
+            contentType:"image/png"
+            },
+        title:req.body.title,
+        body:req.body.body,
+        body2:req.body.body2,
+        category:req.body.category,
+        link:link,
+        lead:finalLead
+    })
+    saveToppost.save()
+   console.log('post is included in top news')
+   const saveLatestpost = new Latestpost({
+    img:{
+        data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
+        contentType:"image/png"
+        },
+        img2:{
+            data: fs.readFileSync('uploads/' + req.files['addnewsImage'][0].filename),
+            contentType:"image/png"
+            },
+        title:req.body.title,
+        body:req.body.body,
+        body2:req.body.body2,
+        category:req.body.category,
+        link:link,
+        lead:finalLead
+})
+saveLatestpost.save()
+.then(()=>{
+    const filesToBeDeleted = Object.keys(req.files)
+    for(var i = 0; i<filesToBeDeleted.length;i++){
+    const path = req.files[filesToBeDeleted[i]][0].path
+    fs.unlink(path, (err) => {
+        if (err) {
+          console.error(err)
+          return;
+        }
+        console.log('image and video removed')
+      })
+    console.log('file is saved')
+    }
+    res.redirect('/all_latest_posts')
+})
+.catch((err)=>{
+    console.log(err)
+})
+}
+else{ 
 
     const saveToppost = new Toppost({
         img:{
@@ -106,6 +238,7 @@ else{
         body:req.body.body,
         body2:req.body.body2,
         category:req.body.category,
+        link:link,
         lead:finalLead
     })
     saveToppost.save()
@@ -119,6 +252,7 @@ else{
         body:req.body.body,
         body2:req.body.body2,
         category:req.body.category,
+        link:link,
         lead:finalLead
 })
 saveLatestpost.save()
@@ -147,7 +281,49 @@ saveLatestpost.save()
 }
 else{
      
-    if(req.files['newsVideo'] !== undefined){
+    if(req.files['newsVideo'] !== undefined && req.files['addnewsImage'] !== undefined ){
+    const saveLatestpost = new Latestpost({
+        img:{
+            data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
+            contentType:"image/png"
+            },
+            img2:{
+                data: fs.readFileSync('uploads/' + req.files['addnewsImage'][0].filename),
+                contentType:"image/png"
+                },
+            vid:{
+                data: fs.readFileSync('uploads/' + req.files['newsVideo'][0].filename),
+                contentType:"image/png"
+                },
+            title:req.body.title,
+            body:req.body.body,
+            body2:req.body.body2,
+            category:req.body.category,
+            link:link,
+            lead:finalLead
+    })
+    saveLatestpost.save()
+    .then(()=>{
+        const filesToBeDeleted = Object.keys(req.files)
+    for(var i = 0; i<filesToBeDeleted.length;i++){
+    const path = req.files[filesToBeDeleted[i]][0].path
+    fs.unlink(path, (err) => {
+        if (err) {
+          console.error(err)
+          return;
+        }
+        console.log('image and video removed')
+      })
+    }
+        console.log('file is saved')
+        res.redirect('/all_latest_posts')
+        
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+}
+else if(req.files['newsVideo'] !== undefined && req.files['addnewsImage'] == undefined){
     const saveLatestpost = new Latestpost({
         img:{
             data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
@@ -161,6 +337,45 @@ else{
             body:req.body.body,
             body2:req.body.body2,
             category:req.body.category,
+            link:link,
+            lead:finalLead
+    })
+    saveLatestpost.save()
+    .then(()=>{
+        const filesToBeDeleted = Object.keys(req.files)
+    for(var i = 0; i<filesToBeDeleted.length;i++){
+    const path = req.files[filesToBeDeleted[i]][0].path
+    fs.unlink(path, (err) => {
+        if (err) {
+          console.error(err)
+          return;
+        }
+        console.log('image and video removed')
+      })
+    }
+        console.log('file is saved')
+        res.redirect('/all_latest_posts')
+        
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+}
+else if(req.files['newsVideo'] == undefined && req.files['addnewsImage'] !== undefined){
+    const saveLatestpost = new Latestpost({
+        img:{
+            data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
+            contentType:"image/png"
+            },
+            img2:{
+                data: fs.readFileSync('uploads/' + req.files['addnewsImage'][0].filename),
+                contentType:"image/png"
+                },
+            title:req.body.title,
+            body:req.body.body,
+            body2:req.body.body2,
+            category:req.body.category,
+            link:link,
             lead:finalLead
     })
     saveLatestpost.save()
@@ -195,6 +410,7 @@ else{
             body:req.body.body,
             body2:req.body.body2,
             category:req.body.category,
+            link:link,
             lead:finalLead
     })
     saveLatestpost.save()
