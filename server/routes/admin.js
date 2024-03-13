@@ -63,12 +63,33 @@ router.post('/admin', async(req,res)=>{
 router.post('/repost/:id',async(req,res)=>{
     
     try{
+        const str = req.body.link;
+        const regexHttp = /https:/g;
+        const regexHttp2 =/www/g;
+        const regTest = regexHttp.test(str)
+        const regTest2 = regexHttp2.test(str)
+        var link;
+        
+        if(!regTest && !regTest){
+            link ="https://www."+str
+        }
+       else if(regTest){
+            link = str
+          }
+
        const slug = req.params.id
       await Latestpost.findOneAndUpdate({_id:slug},{$set: {
            title:req.body.title,
+           link:link,
            body:req.body.body,
            body2:req.body.body2
        }})
+       await Toppost.findOneAndUpdate({_id:slug},{$set: {
+        title:req.body.title,
+        link:link,
+        body:req.body.body,
+        body2:req.body.body2
+    }})
        .then(()=>{
            console.log('file is updated')
            res.redirect('/all_latest_posts');
@@ -150,7 +171,7 @@ router.get('/all_top_posts', authMiddleware, async(req,res)=>{
 })
 router.get('/delete/:title', authMiddleware,async(req,res)=>{
     try{
-
+ 
  const slug = req.params.title;
 await Latestpost.deleteOne({title:slug});
 await Toppost.deleteOne({title:slug});
