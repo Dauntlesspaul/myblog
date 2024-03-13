@@ -7,9 +7,17 @@
      <div class="container_img"><img id="news_photo" src=<%="data:image/png;base64,"+ data.img.data.toString("base64") %> alt=""/></div>
   </figure>
 <div class="article_container"> <article>
-    <span class="content_news"><%=data.body  %></span>
+    <span class="content_news"><%=data.body  %></span>&nbsp;
+    <% if (!data.link=='') { %>
+      <span class="link_container" style="color:red;">
+         <a href="<%= data.link %>" target="_blank"><u><em>click for more info</em></u></a>
+      </span>
+      
+      <% } %>
  </article> </div>
- 
+ <% if (!data.img2==undefined) { %>
+  <div class="container_img"><img id="news_photo" src=<%="data:image/png;base64,"+ data.img2.data.toString("base64") %> alt=""/></div>
+  <% } %>
   <% if (!data.vid.data=='') { %>
    
  
