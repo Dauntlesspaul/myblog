@@ -22,16 +22,19 @@
 </div>
 
 <% } %>
-
+<div class="article_container"> <article>
+  <span class="content_news"><%=data.body2  %></span>
+</article> </div>
       </div>
      </div>
 
      <div class="btns_container">
-      <div class="edit_btn">Edit Post</div>
-     <div onclick="onPopup()" class="delete_btn">Delete Post</div>
+      <a href="/edit/<%= data._id %>"><span class="edit_btn">Edit Post</span></a>
+     <button onclick="onPopup()" class="delete_btn">Delete Post</button>
    </div>
-<div id="popup" class="popup">
-  <span style="font-size: 14px;">Are you sure you want to delete this post ?</span>
-   <div class="yes_no"><span style="color: red;"><a href="/delete/<%= data.title %>">YES</a></span><span  onclick="offPopup()" style="color: rgb(20, 183, 20);">NO</span></div>
+<div id="popup" class="popup"><div>
+  <span style="font-size: 14px;color: white;">Are you sure you want to delete this post ?</span>
+   <div class="yes_no"><span style="color: #a00202;cursor: pointer;"><a href="/delete/<%= data.title %>">YES</a></span><span  onclick="offPopup()" style="color: rgb(12, 131, 12);cursor: pointer;">NO</span></div>
+</div>
 </div>
   </div>

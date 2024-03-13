@@ -29,7 +29,6 @@ router.get('/admin', async(req,res)=>{
     const locals = {
         hide:"blank"
     }
-
   
     return res.render('admin/index',{locals, layout: adminLayout}
     )
@@ -45,11 +44,11 @@ router.post('/admin', async(req,res)=>{
         const {username,password} = req.body;
         const user = await Users.findOne({username})
         if(!user){
-            return res.status(401).json({message:'Invalid Credentials'})
+            return res.render('admin/error',{locals, layout: adminLayout,username,password})
         }
         const isPasswordWord = await bcrypt.compare(password,user.password)
         if(!isPasswordWord){
-            return res.status(401).json({message:'Invalid Credentials'})
+            return res.render('admin/error',{locals, layout: adminLayout,username,password})
         }
         const token =jwt.sign({userId:user._id},jwtSecret)
         res.cookie('token',token,{httpOnly:true})
@@ -60,6 +59,26 @@ router.post('/admin', async(req,res)=>{
         console.log(error)
     }
 })
+
+router.post('/repost/:id',async(req,res)=>{
+    
+    try{
+       const slug = req.params.id
+      await Latestpost.findOneAndUpdate({_id:slug},{$set: {
+           title:req.body.title,
+           body:req.body.body,
+           body2:req.body.body2
+       }})
+       .then(()=>{
+           console.log('file is updated')
+           res.redirect('/all_latest_posts');
+       })
+    }
+    catch(error){
+       console.log(error)
+    }
+       
+   })
 
 router.get('/dashboard',authMiddleware,async(req,res)=>{
     const locals = {
@@ -131,6 +150,7 @@ router.get('/all_top_posts', authMiddleware, async(req,res)=>{
 })
 router.get('/delete/:title', authMiddleware,async(req,res)=>{
     try{
+
  const slug = req.params.title;
 await Latestpost.deleteOne({title:slug});
 await Toppost.deleteOne({title:slug});
@@ -150,6 +170,20 @@ router.get('/alllatestposts/:id',authMiddleware, async(req,res)=>{
         layout: adminLayout,
     locals})
         
+})
+router.get('/edit/:id',authMiddleware,async(req,res)=>{
+    try{
+        const locals = {
+            hide2:"blank2"
+        }
+        const slug = req.params.id;
+        const data = await Latestpost.findById({_id:slug})
+     return res.render('admin/edit',{data, layout: adminLayout,
+        locals})
+    }
+    catch(error){
+        console.log(error)
+    }
 })
 router.get('/alltopposts/:id', authMiddleware, async(req,res)=>{
     const locals = {

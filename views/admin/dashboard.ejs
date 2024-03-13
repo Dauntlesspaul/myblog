@@ -1,32 +1,33 @@
 <div class="main">
 <div class="post_formset">
+  <div style="width: 94%;">
+  <div style="display: flex;justify-content: center;align-items: center;width: 100%; color:#a00202;font-weight: 700;margin-bottom: 20px;"><span><i style="color: black;font-size: 30px;" class="fa-solid fa-cloud-arrow-up"></i></span>CONTROL PANNEL</div>
 <form class="post_form" method="post" action="/uploadlatest"  enctype="multipart/form-data" >
-  <label for="image">Insert Post Image </label>
-  <input type="file" name="newsImage" required>
-  <label for="title">Insert Post Titile</label>
+  <label>Select Post Image</label>
+  <div class="file_name"><label style="cursor: pointer;" for="image"><img src="/img/image-solid.svg"> </label> <span id="file_name" style="color:#a00202;font-size: 10px;">&nbsp;no file selected</span></div>
+  <input type="file" onchange="displayFileName(this.value,this.id)" id="image" name="newsImage" required>
+  <label for="title">Post Titile</label>
   <input type="text" id="post_t" name="title" placeholder="Enter post title" required>
- <label class="t_l" for="title"><div style="display: flex; align-items: center;">Latest News <input type="checkbox" name="lpost" style=" accent-color: black;" value="latestpost" checked></div><div style="display: flex;align-items: center">Top News<input type="checkbox" name="tpost" style=" accent-color: black;" value="toppost"></div></label>
+ <label class="t_l" for="title"><div style="display: flex; align-items: center;">Latest News &nbsp;<input type="checkbox" name="lpost" style=" accent-color: black;" value="latestpost" checked></div><div style="display: flex;align-items: center">Top News&nbsp;<input type="checkbox" name="tpost" style=" accent-color: black;" value="toppost"></div></label>
   <select name="category" id="select" required>
     <option disabled selected value>Select category</option>
     <option value="education">Education</option>
     <option value="politics">Politics</option>
     <option value="sports">Sports</option>
     <option value="entertainment">Entertainment</option>
+    <option value="technology">Technology</option>
+    <option value="business">Business</option>
+    <option value="economy">Economy</option>
   </select>
-  <label for="body">Insert Post</label>
+  <label for="body">Post Content</label>
   <textarea  type="text"  name="body" placeholder="Enter post content" required></textarea>
-  <label for="video">Insert Post Video</label>
-  <div class="file_input"><input type="file" name="newsVideo" ></div>
-  <label for="body2">Insert Post 2</label>
+  <label>Select Video</label>
+  <div class="file_name"><label for="video"><img style="cursor: pointer;" src="/img/video-solid.svg" alt="video icon"></label><span id="video-name" style="color:#a00202;font-size: 10px;">&nbsp;no file selected</span></div>
+  <div class="file_input"><input type="file" onchange="displayFileName(this.value,this.id)" id="video" name="newsVideo" ></div>
+  <label for="body2">Additional Post Content </label>
   <textarea type="text" name="body2" placeholder="Enter post content"></textarea>
-  <input class="form_submitbtn" type="submit">
+  <button class="form_submitbtn" type="submit">UPLOAD <span><img   src="/img/upload-solid.svg" alt="upload icon" style="color: white; width: 16px;"></span></button>
 </form>
-
 </div>
-
-
-
-
-
-
+</div>
 </div>

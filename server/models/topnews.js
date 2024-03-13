@@ -37,4 +37,5 @@ const TopPostSchema = new Schema({
         default:Date.now
         }
 })
+TopPostSchema.index({ createdAt: 1})
 module.exports = mongoose.model("Toppost",TopPostSchema)

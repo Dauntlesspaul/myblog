@@ -7,6 +7,22 @@ const Toppost = require('../models/topnews')
 const fs = require('fs')
 
 
+Toppost.createIndexes({createdAt:1})
+.then(()=>{
+    console.log('index created successfully')
+})
+.catch((err)=>{
+    console.error('Error in creating index')
+})
+
+Latestpost.createIndexes({createdAt:1})
+.then(()=>{
+    console.log('index created successfully')
+})
+.catch((err)=>{
+    console.error('Error in creating index')
+})
+
 
 const storage = multer.diskStorage({ 
     destination:(req,file,cb)=>{
@@ -18,14 +34,15 @@ const storage = multer.diskStorage({
 })
 const upload =multer({storage:storage});
 
+
+
 router.post('/uploadlatest',upload.fields([{ name: 'newsImage', maxCount: 1 },  { name: 'newsVideo', maxCount: 8 }]),async(req,res)=>{
 
     const newsLead = req.body.body;
     const newsLead_array =newsLead.split(' ').splice(0,12);
     const finalLead = newsLead_array.join(' ')
-    
  if(req.body.tpost=="toppost"){
-    if(!req.files['newsVideo'] == null){
+    if(req.files['newsVideo'] !== undefined){
     const saveToppost = new Toppost({
         img:{
         data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
@@ -60,7 +77,18 @@ router.post('/uploadlatest',upload.fields([{ name: 'newsImage', maxCount: 1 },  
 })
 saveLatestpost.save()
 .then(()=>{
+    const filesToBeDeleted = Object.keys(req.files)
+    for(var i = 0; i<filesToBeDeleted.length;i++){
+    const path = req.files[filesToBeDeleted[i]][0].path
+    fs.unlink(path, (err) => {
+        if (err) {
+          console.error(err)
+          return;
+        }
+        console.log('image and video removed')
+      })
     console.log('file is saved')
+    }
     res.redirect('/all_latest_posts')
 })
 .catch((err)=>{
@@ -95,6 +123,18 @@ else{
 })
 saveLatestpost.save()
 .then(()=>{
+    
+    const filesToBeDeleted = Object.keys(req.files)
+    for(var i = 0; i<filesToBeDeleted.length;i++){
+    const path = req.files[filesToBeDeleted[i]][0].path
+    fs.unlink(path, (err) => {
+        if (err) {
+          console.error(err)
+          return;
+        }
+        console.log('image and video removed')
+      })
+    }
     console.log('file is saved')
     res.redirect('/all_latest_posts')
 })
@@ -107,7 +147,7 @@ saveLatestpost.save()
 }
 else{
      
-    if(!req.files['newsVideo'] == null){
+    if(req.files['newsVideo'] !== undefined){
     const saveLatestpost = new Latestpost({
         img:{
             data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
@@ -125,6 +165,17 @@ else{
     })
     saveLatestpost.save()
     .then(()=>{
+        const filesToBeDeleted = Object.keys(req.files)
+    for(var i = 0; i<filesToBeDeleted.length;i++){
+    const path = req.files[filesToBeDeleted[i]][0].path
+    fs.unlink(path, (err) => {
+        if (err) {
+          console.error(err)
+          return;
+        }
+        console.log('image and video removed')
+      })
+    }
         console.log('file is saved')
         res.redirect('/all_latest_posts')
         
@@ -148,6 +199,17 @@ else{
     })
     saveLatestpost.save()
     .then(()=>{
+        const filesToBeDeleted = Object.keys(req.files)
+    for(var i = 0; i<filesToBeDeleted.length;i++){
+    const path = req.files[filesToBeDeleted[i]][0].path
+    fs.unlink(path, (err) => {
+        if (err) {
+          console.error(err)
+          return;
+        }
+        console.log('image and video removed')
+      })
+    }
         console.log('file is saved')
         res.redirect('/all_latest_posts');
     })
@@ -157,6 +219,20 @@ else{
 }
 }
 })
+
+
+
+
+
+
+           
+
+
+
+
+
+
+
 
 
 
@@ -202,19 +278,19 @@ router.post('/search',async(req,res)=>{
 
 router.get('', async(req,res)=>{
     const locals = {
-        title:"my new blog project",
-        description: "a site built with node.js, ejs, express and mongodb",
+        title:"Grid News",
+        description: "Timeless news",
         select:"aktive"
     }
 
     try{
 
-        const data = await Latestpost.aggregate([{$sort:{createdAt:-1}}],{allowDiskUse:true}).skip(0).limit(8).exec();
-        const topP = await Toppost.aggregate([{$sort:{createdAt:-1}}],{allowDiskUse:true}).skip(0).limit(6).exec();
-        const politicS = await Latestpost.find({category:"politics"}).sort({createdAt:-1}).skip(0).limit(8).exec();
-        const educatioN = await Latestpost.find({category:"education"}).sort({createdAt:-1}).skip(0).limit(8).exec();
-        const entertainmenT = await Latestpost.find({category:"entertainment"}).sort({createdAt:-1}).skip(0).limit(8).exec();
-        const sportS = await Latestpost.find({category:"sports"}).sort({createdAt:-1}).skip(0).limit(8).exec();
+        const data = await Latestpost.aggregate([{$sort:{createdAt:-1}}, {$skip: 0}, {$limit: 8}])
+        const topP = await Toppost.aggregate([{$sort:{createdAt:-1}}, {$skip: 0}, {$limit: 6}])
+        const politicS = await Latestpost.aggregate([{$match: {category:"politics"}}, {$sort:{createdAt:-1}}, {$skip: 0}, {$limit: 8}])
+        const educatioN = await Latestpost.aggregate([{$match: {category:"education"}},{$sort:{createdAt:-1}}, {$skip: 0}, {$limit: 8}])
+        const entertainmenT = await Latestpost.aggregate([{$match: {category:"entertainment"}}, {$sort:{createdAt:-1}}, {$skip: 0}, {$limit: 8}])
+        const sportS = await Latestpost.aggregate([{$match: {category:"sports"}}, {$sort:{createdAt:-1}}, {$skip: 0}, {$limit: 8}])
          
         return res.render('index',{locals, data,topP, politicS, educatioN, entertainmenT, sportS});
     }catch(error){
@@ -385,6 +461,81 @@ router.get('/allsports', async(req,res)=>{
    
 })
 
+router.get('/alltechnology', async(req,res)=>{
+
+    let perPage=12
+    let page= parseInt(req.query.page) || 1;
+    let beforePage =page -1;
+    let afterPage = page + 1;
+    const data = await Latestpost.find({category:"technology"}).sort({createdAt:-1})
+    .skip(perPage * page - perPage).limit(perPage).exec()
+
+    let totalPost = await Latestpost.find({category:"technology"}).countDocuments();
+    let totalPages = Math.ceil(totalPost/perPage)
+  
+    return res.render('alltechnology',{data,
+    page,
+    perPage,
+    totalPages,
+    beforePage,
+    afterPage
+    })
+   
+})
+
+router.get('/allbusiness', async(req,res)=>{
+    const locals = {
+        selects:"aktive"
+    }
+
+    let perPage=12
+    let page= parseInt(req.query.page) || 1;
+    let beforePage =page -1;
+    let afterPage = page + 1;
+    const data = await Latestpost.find({category:"business"}).sort({createdAt:-1})
+    .skip(perPage * page - perPage).limit(perPage).exec()
+
+    let totalPost = await Latestpost.find({category:"business"}).countDocuments();
+    let totalPages = Math.ceil(totalPost/perPage)
+  
+    return res.render('allbusiness',{data,
+    page,
+    perPage,
+    totalPages,
+    beforePage,
+    afterPage,
+    locals
+    })
+   
+})
+
+router.get('/alleconomy', async(req,res)=>{
+    const locals = {
+        selects:"aktive"
+    }
+
+    let perPage=12
+    let page= parseInt(req.query.page) || 1;
+    let beforePage =page -1;
+    let afterPage = page + 1;
+    const data = await Latestpost.find({category:"economy"}).sort({createdAt:-1})
+    .skip(perPage * page - perPage).limit(perPage).exec()
+
+    let totalPost = await Latestpost.find({category:"economy"}).countDocuments();
+    let totalPages = Math.ceil(totalPost/perPage)
+  
+    return res.render('alleconomy',{data,
+    page,
+    perPage,
+    totalPages,
+    beforePage,
+    afterPage,
+    locals
+    })
+   
+})
+
+
 router.get('/allentertainment', async(req,res)=>{
     const locals = {
         selecten:"aktive"
@@ -500,6 +651,39 @@ router.get('/entertainment/:id', async(req,res)=>{
     return res.render('entertainment',{data,result})
    
 })
+router.get('/technology/:id', async(req,res)=>{
+    const slug =req.params.id;
+    const data = await Latestpost.findById({_id:slug});
+    const related = data.category;
+    const result = await Latestpost.find({$and:
+        [{category:related},
+         { _id: { $ne: slug } }]}).sort({createdAt:-1}).skip(0).limit(4).exec();
+
+    return res.render('technology',{data,result})
+   
+})
+router.get('/business/:id', async(req,res)=>{
+    const slug =req.params.id;
+    const data = await Latestpost.findById({_id:slug});
+    const related = data.category;
+    const result = await Latestpost.find({$and:
+        [{category:related},
+         { _id: { $ne: slug } }]}).sort({createdAt:-1}).skip(0).limit(4).exec();
+
+    return res.render('business',{data,result})
+   
+})
+router.get('/economy/:id', async(req,res)=>{
+    const slug =req.params.id;
+    const data = await Latestpost.findById({_id:slug});
+    const related = data.category;
+    const result = await Latestpost.find({$and:
+        [{category:related},
+         { _id: { $ne: slug } }]}).sort({createdAt:-1}).skip(0).limit(4).exec();
+
+    return res.render('economy',{data,result})
+   
+})
 
 router.get('/education/:id', async(req,res)=>{
     const slug =req.params.id;
@@ -547,7 +731,16 @@ router.get('/search/:id', async(req,res)=>{
     return res.render('search',{data,result})
    
 })
-
+router.get('/about', async(req,res)=>{
+   
+    return res.render('about')
+   
+})
+router.get('/contact', async(req,res)=>{
+   
+    return res.render('contact')
+   
+})
 
 
 
