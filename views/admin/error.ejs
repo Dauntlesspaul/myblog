@@ -1,0 +1,15 @@
+<div class="main">
+ <div class="center">
+      <div style="width: 285px;">
+     <div style="width:100%;text-align: center;"><span style="color:#a00202">Invalid Credentials</span></div>
+     <div style="width: 100%;text-align: center;"><span><i style="color: black;font-size: 50px;" class="fa-solid fa-user"></i></span><h3 style="color: #a00202;">ADMIN LOGIN</h3></div>
+   <form action="/admin" method="post">
+    <label for="username"><b>Username </b></label>
+    <input class="enlarge" type="text" name="username" value="<%= username %>" placeholder="Enter Username" required>
+    <label for="password"><b>Password </b></label>
+    <input class="enlarge" type="password" name="password" value="<%= password %>" placeholder="Enter Password" required>
+    <button id="submit_btn" type="submit">LOGIN</button>
+    </form>
+    </div>
+
+</div>

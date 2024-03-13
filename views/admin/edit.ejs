@@ -1,0 +1,16 @@
+<div class="main">
+<div class="post_formset">
+  <div style="width: 94%;">
+  <div style="display: flex;justify-content: center;align-items: center;width: 100%; color:#a00202;font-weight: 700;margin-bottom: 20px;"><span><i style="color: black;font-size: 30px;" class="fa-solid fa-cloud-arrow-up"></i></span>CONTROL PANNEL</div>
+<form class="post_form" method="post" action="/repost/<%= data._id %>" >
+  <label for="title">Post Titile</label>
+  <input type="text" id="post_t" name="title" placeholder="Enter post title" value="<%= data.title %>" required>
+  <label for="body">Post Content</label>
+  <textarea  type="text"  name="body" placeholder="Enter post content" required><%=data.body %></textarea>
+  <label for="body2">Additional Post Content </label>
+  <textarea type="text" name="body2" placeholder="Enter post content"><%= data.body2 %></textarea>
+  <button class="form_submitbtn" type="submit">UPLOAD <span><img   src="/img/upload-solid.svg" alt="upload icon" style="color: white; width: 16px;"></span></button>
+</form>
+</div>
+</div>
+</div>
