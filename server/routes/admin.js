@@ -169,12 +169,22 @@ router.get('/all_top_posts', authMiddleware, async(req,res)=>{
         console.log(error)
     }
 })
-router.get('/delete/:title', authMiddleware,async(req,res)=>{
+router.get('/deletetop/:id', authMiddleware,async(req,res)=>{
     try{
  
- const slug = req.params.title;
-await Latestpost.deleteOne({title:slug});
-await Toppost.deleteOne({title:slug});
+ const slug = req.params.id;
+await Toppost.deleteOne({_id:slug});
+    res.redirect('/all_latest_posts')
+    }
+    catch(error){
+        console.log(error)
+    }
+})
+router.get('/delete/:id', authMiddleware,async(req,res)=>{
+    try{
+ 
+ const slug = req.params.id;
+await Latestpost.deleteOne({_id:slug});
     res.redirect('/all_latest_posts')
     }
     catch(error){

@@ -9,7 +9,7 @@ const MongoStore = require('connect-mongo')
 const session = require('express-session')
 const app = express();
 const PORT = 8000 || process.env.PORT;
-connectDB();
+connectDB.connectDB();
 
 app.use(cookieParser());
 app.use(session({
