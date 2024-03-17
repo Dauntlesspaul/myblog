@@ -600,6 +600,11 @@ button{
     width: 100%;
     margin: 3px 0 10px 0;
   }
+  .vid_container video{
+    width:80%;
+    height: 50%;
+    object-fit:cover;
+  }
  .center{
   width:100%;
   display: flex;
@@ -922,10 +927,7 @@ button{
      z-index: 1;
      display: grid;
     }
-    .vid_container video{
-      width: 390px !important;
-      height: 310px !important;
-    }
+   
     .header-search{
       display: none;
     }
@@ -1173,4 +1175,8 @@ justify-content: center;
     border-radius: 8px;
     margin: 0;
   }
+  
+  .main{
+    width: 53%;
+   }
 }

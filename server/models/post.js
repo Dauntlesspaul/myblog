@@ -1,48 +1,41 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const PostSchema = new Schema({
-    img:{
-    data:Buffer,
-    contentType: String
-    },
-    vid:{
-    data:Buffer,
+const FileSchema = new Schema({
+    filename: String,
     contentType: String,
+    bucketName: String
+});
+const PostSchema = new Schema({
+    images: [FileSchema], // Store references to image files
+    videos: [FileSchema], // Store references to video files
+    link: String,
+    title: {
+        type: String,
+        required: true
     },
-    img2:{
-    data:Buffer,
-    contentType: String
+    lead: {
+        type: String,
+        required: true
     },
-    link:{
-    type:String
+    body: {
+        type: String,
+        required: true
     },
-    title:{
-    type:String,
-    required:true
+    body2: String,
+    category: {
+        type: String,
+        required: true
     },
-    lead:{
-    type:String,
-    required:true
+    createdAt: {
+        type: Date,
+        default: Date.now
     },
-    body:{
-    type:String,
-    required:true
-    },
-    body2:{
-    type:String
-    },
-    category:{
-    type:String,
-    required:true
-    },
-    createdAt:{
-    type:Date,
-    default:Date.now
-    },
-    updatedAt:{
-    type:Date,
-    default:Date.now
+    updatedAt: {
+        type: Date,
+        default: Date.now
     }
-})
-PostSchema.index({ createdAt: 1})
-module.exports = mongoose.model("Latestpost",PostSchema)
+});
+
+PostSchema.index({ createdAt: 1 });
+
+module.exports = mongoose.model("Latestpost", PostSchema);

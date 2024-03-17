@@ -12,7 +12,7 @@
        
    
                   <a href="/latestpost/<%= post._id %>"> <div class="grid_container">
-                       <div class="item1"><div><img class="latestnewsimg" src=<%="data:image/png;base64,"+ post.img.data.toString("base64") %> alt=""/></div></div>
+                       <div class="item1"><div><img class="latestnewsimg" src="/stream/<%= post.images[0].filename %>" alt="latest news image"></div></div>
                        <div class="item2"><%= post.title %><div class="lead" ><%= post.lead %>...</div>
                            <div class="ct"><span id="ct" ><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= post.createdAt.toDateString()  %></span></div>
                                    <div class="cat"><span><%= post.category[0].toUpperCase() + post.category.slice(1) %></span> </div>
@@ -45,7 +45,7 @@
                <div class="topnews_frame" >
                    <div class="category"><%=singleData.category%></div>
                    <a href="/toppost/<%= singleData._id %>">
-                    <img class="topnewsimg" src=<%="data:image/png;base64,"+ singleData.img.data.toString("base64") %> alt=""/> 
+                    <img class="topnewsimg" src="/stream/<%= singleData.images[0].filename %>"  alt="top news image"> 
                     <span style="font-size: 15px;font-size: 700;"><%= singleData.title %></span>
                    <div class="lead"><%= singleData.lead %>...</div>
                    <div class="ct"><span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= singleData.createdAt.toDateString()  %></span></div>
@@ -74,7 +74,7 @@
        
    
                   <a href="/entertainment/<%= post._id %>"> <div class="grid_container">
-                       <div class="item1"><div><img class="latestnewsimg" src=<%="data:image/png;base64,"+ post.img.data.toString("base64") %> alt=""/></div></div>
+                       <div class="item1"><div><img class="latestnewsimg" src="/stream/<%=post.images[0].filename%>"  alt=""/></div></div>
                        <div class="item2"><%= post.title %><div class="lead" ><%= post.lead %>...</div>
                            <div class="ct"><span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= post.createdAt.toDateString()  %></span></div>
                                <div class="cat"><span><%= post.category[0].toUpperCase() + post.category.slice(1) %></span> </div>
@@ -104,7 +104,7 @@
            
        
                       <a href="/education/<%= post._id %>"> <div class="grid_container">
-                           <div class="item1"><div><img class="latestnewsimg" src=<%="data:image/png;base64,"+ post.img.data.toString("base64") %> alt=""/></div></div>
+                           <div class="item1"><div><img class="latestnewsimg" src="/stream/<%= post.images[0].filename %>" alt=""/></div></div>
                            <div class="item2"><%= post.title %><div class="lead" ><%= post.lead %>...</div>
                                <div class="ct"> <span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= post.createdAt.toDateString()  %></span></div>
                                 <div class="cat"><span><%=  post.category[0].toUpperCase() + post.category.slice(1) %></span> </div>
@@ -136,7 +136,7 @@
        
    
                    <a href="/politics/<%= post._id %>"><div class="grid_container">
-                       <div class="item1"><div><img class="latestnewsimg" src=<%="data:image/png;base64,"+ post.img.data.toString("base64") %> alt=""/></div></div>
+                       <div class="item1"><div><img class="latestnewsimg" src="/stream/<%= post.images[0].filename %>" alt=""/></div></div>
                        <div class="item2"><%= post.title %><div class="lead" ><%= post.lead %>...</div>
                            <div class="ct"><span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= post.createdAt.toDateString()  %></span></div>
                            <div class="cat"><span><%=  post.category[0].toUpperCase() + post.category.slice(1) %></span> </div>
@@ -164,7 +164,7 @@
        
    
                    <a href="/sports/<%= post._id %>"><div class="grid_container">
-                       <div class="item1"><div><img class="latestnewsimg" src=<%="data:image/png;base64,"+ post.img.data.toString("base64") %> alt=""/></div></div>
+                       <div class="item1"><div><img class="latestnewsimg" src="/stream/<%= post.images[0].filename %>" alt=""/></div></div>
                        <div class="item2"><%= post.title %><div class="lead" ><%= post.lead %>...</div>
                        <div class="ct"><span id="ct"><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= post.createdAt.toDateString()  %></span></div>
                        <div class="cat"><span><%= post.category[0].toUpperCase() + post.category.slice(1) %></span> </div>

@@ -4,12 +4,12 @@
   <figure>
      <figcaption><h2 class="content_newsh"><%= data.title %></h2></figcaption>
      <span style="font-size: 12px;font-family: 'Newsreader', serif;"><%= data.createdAt.toDateString() %></span>
-     <div class="container_img"><img id="news_photo" src=<%="data:image/png;base64,"+ data.img.data.toString("base64") %> alt=""/></div>
+     <div class="container_img"><img id="news_photo" src="/stream/<%= data.images[0].filename %>" alt=""/></div>
   </figure>
 <div class="article_container"> 
    <article>
     <span class="content_news"><%=data.body  %></span>&nbsp;
-    <% if (!data.link==undefined) { %>
+    <% if (data.link !== undefined) { %>
       <span class="link_container" style="color:red;">
          <a href="<%= data.link %>" target="_blank"><u><em>click for more info</em></u></a>
       </span>
@@ -17,16 +17,16 @@
       <% } %>
  </article>
  </div>
- <% if (!data.img2==undefined) { %>
-   <div class="container_img"><img id="news_photo" src=<%="data:image/png;base64,"+ data.img2.data.toString("base64") %> alt=""/></div>
+ <% if (data.images.length > 1) { %>
+   <div class="container_img"><img id="news_photo" src="/stream/<%= data.images[1].filename %>"  alt=""/></div>
    <% } %>
-  <% if (!data.vid.data==undefined) { %>
+  <% if (data.videos[0] !== undefined) { %>
    
  
 
 <div class="vid_container">
  <video width="320" height="240"  controls>
-  <source src="<%="data:video/mp4;base64,"+ data.vid.data.toString("base64") %> " type="video/mp4">
+  <source src="/stream/<%= data.videos[0].filename %>" type="video/mp4">
   <source src="movie.ogg" type="video/ogg">
 </video>
 </div>
@@ -52,7 +52,7 @@
   
 
              <a href="/education/<%= related._id %>"> <div class="grid_container">
-                  <div class="item1"><div><img class="latestnewsimg" src=<%="data:image/png;base64,"+ related.img.data.toString("base64") %> alt=""/></div></div>
+                  <div class="item1"><div><img class="latestnewsimg" src="/stream/<%= related.images[0].filename %>" alt=""/></div></div>
                   <div class="item2"><%= related.title %><div class="lead" ><%= related.lead %>...</div>
                       <div class="ct"><span id="ct" ><i style="color:rgb(49, 48, 48); margin-right: 2px;" class="fa-solid fa-clock"></i><%= related.createdAt.toDateString()  %></span></div>
                       <div class="cat"><span><%= related.category[0].toUpperCase()+related.category.slice(1) %></span> </div>

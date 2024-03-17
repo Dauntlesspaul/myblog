@@ -1,11 +1,49 @@
 require('dotenv').config();
+const mongoose = require('mongoose')
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const Latestpost = require('../models/post');
 const Toppost = require('../models/topnews')
+const {conn} = require('../config/db')
 const fs = require('fs')
+const path = require('path')
+const crypto = require('crypto')
+const {GridFsStorage} = require('multer-gridfs-storage')
+const Grid = require('gridfs-stream');
+const e = require('express');
 
+
+let gfs, gridfsBucket;
+
+conn.once('open', ()=>{
+
+    gridfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
+        bucketName: 'uploads'
+    });
+    gfs = Grid(conn.db, mongoose.mongo);
+    gfs.collection('uploads');
+})
+
+const storage = new GridFsStorage({
+    url: process.env.MONGO_URI,
+    file: (req, file) => {
+      return new Promise((resolve, reject) => {
+        crypto.randomBytes(16, (err, buf) => {
+          if (err) {
+            return reject(err);
+          }
+          const filename = buf.toString('hex') + path.extname(file.originalname);
+          const fileInfo = {
+            filename: filename,
+            bucketName: 'uploads'
+          };
+          resolve(fileInfo);
+        });
+      });
+    }
+  });
+  const upload = multer({ storage });
 
 Toppost.createIndexes({createdAt:1})
 .then(()=>{
@@ -24,417 +62,137 @@ Latestpost.createIndexes({createdAt:1})
 })
 
 
-const storage = multer.diskStorage({ 
-    destination:(req,file,cb)=>{
-        cb(null, 'uploads');
-    },
-    filename:(req,file,cb)=>{
-        cb(null,file.originalname)
-    }
-})
-const upload =multer({storage:storage});
+ const uploadMiddleware = upload.fields([
+    {name:'newsImage', maxCount: 2},
+    {name:'newsVideo', maxCount: 1}
+ ])
 
-
-
-router.post('/uploadlatest',upload.fields([{ name: 'newsImage', maxCount: 1 },  { name: 'newsVideo', maxCount: 1 }, { name: 'addnewsImage', maxCount: 1 }]),async(req,res)=>{
+router.post('/uploadlatest', uploadMiddleware, async(req,res)=>{
     const str = req.body.link;
     const regexHttp = /https:/g;
     const regexHttp2 =/www/g;
     const regTest = regexHttp.test(str)
     const regTest2 = regexHttp2.test(str)
     var link;
-    
-    if(!regTest && !regTest){
+    if(!regTest && !regTest2 && str!==''){
         link ="https://www."+str
     }
    else if(regTest){
         link = str
       }
-    const newsLead = req.body.body;
-    const newsLead_array =newsLead.split(' ').splice(0,12);
-    const finalLead = newsLead_array.join(' ')
- if(req.body.tpost=="toppost"){
-    if(req.files['newsVideo'] !== undefined && req.files['addnewsImage'] !== undefined ){
-    const saveToppost = new Toppost({
-        img:{
-        data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
-        contentType:"image/png"
-        },
-        img2:{
-            data: fs.readFileSync('uploads/' + req.files['addnewsImage'][0].filename),
-            contentType:"image/png"
-            },
-        vid:{
-            data: fs.readFileSync('uploads/' + req.files['newsVideo'][0].filename),
-            contentType:"image/png"
-            },
-        title:req.body.title,
-        body:req.body.body,
-        body2:req.body.body2,
-        category:req.body.category,
-        link:link,
-        lead:finalLead
-    })
-    saveToppost.save()
-   console.log('post is included in top news')
-   const saveLatestpost = new Latestpost({
-    img:{
-        data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
-        contentType:"image/png"
-        },
-        img2:{
-            data: fs.readFileSync('uploads/' + req.files['addnewsImage'][0].filename),
-            contentType:"image/png"
-            },
-        vid:{
-            data: fs.readFileSync('uploads/' + req.files['newsVideo'][0].filename),
-            contentType:"image/png"
-            },
-        title:req.body.title,
-        body:req.body.body,
-        body2:req.body.body2,
-        category:req.body.category,
-        link:link,
-        lead:finalLead
-})
-saveLatestpost.save()
-.then(()=>{
-    const filesToBeDeleted = Object.keys(req.files)
-    for(var i = 0; i<filesToBeDeleted.length;i++){
-    const path = req.files[filesToBeDeleted[i]][0].path
-    fs.unlink(path, (err) => {
-        if (err) {
-          console.error(err)
-          return;
-        }
-        console.log('image and video removed')
-      })
-    console.log('file is saved')
-    }
-    res.redirect('/all_latest_posts')
-})
-.catch((err)=>{
-    console.log(err)
-})
-    }
-else if (req.files['newsVideo'] !== undefined && req.files['addnewsImage'] == undefined){
-    const saveToppost = new Toppost({
-        img:{
-        data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
-        contentType:"image/png"
-        },
-        vid:{
-            data: fs.readFileSync('uploads/' + req.files['newsVideo'][0].filename),
-            contentType:"image/png"
-            },
-        title:req.body.title,
-        body:req.body.body,
-        body2:req.body.body2,
-        category:req.body.category,
-        link:link,
-        lead:finalLead
-    })
-    saveToppost.save()
-   console.log('post is included in top news')
-   const saveLatestpost = new Latestpost({
-    img:{
-        data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
-        contentType:"image/png"
-        },
-        vid:{
-            data: fs.readFileSync('uploads/' + req.files['newsVideo'][0].filename),
-            contentType:"image/png"
-            },
-        title:req.body.title,
-        body:req.body.body,
-        body2:req.body.body2,
-        category:req.body.category,
-        link:link,
-        lead:finalLead
-})
-saveLatestpost.save()
-.then(()=>{
-    const filesToBeDeleted = Object.keys(req.files)
-    for(var i = 0; i<filesToBeDeleted.length;i++){
-    const path = req.files[filesToBeDeleted[i]][0].path
-    fs.unlink(path, (err) => {
-        if (err) {
-          console.error(err)
-          return;
-        }
-        console.log('image and video removed')
-      })
-    console.log('file is saved')
-    }
-    res.redirect('/all_latest_posts')
-})
-.catch((err)=>{
-    console.log(err)
-})
-}
- else if(req.files['newsVideo'] == undefined && req.files['addnewsImage'] !== undefined){
-    const saveToppost = new Toppost({
-        img:{
-        data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
-        contentType:"image/png"
-        },
-        img2:{
-            data: fs.readFileSync('uploads/' + req.files['addnewsImage'][0].filename),
-            contentType:"image/png"
-            },
-        title:req.body.title,
-        body:req.body.body,
-        body2:req.body.body2,
-        category:req.body.category,
-        link:link,
-        lead:finalLead
-    })
-    saveToppost.save()
-   console.log('post is included in top news')
-   const saveLatestpost = new Latestpost({
-    img:{
-        data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
-        contentType:"image/png"
-        },
-        img2:{
-            data: fs.readFileSync('uploads/' + req.files['addnewsImage'][0].filename),
-            contentType:"image/png"
-            },
-        title:req.body.title,
-        body:req.body.body,
-        body2:req.body.body2,
-        category:req.body.category,
-        link:link,
-        lead:finalLead
-})
-saveLatestpost.save()
-.then(()=>{
-    const filesToBeDeleted = Object.keys(req.files)
-    for(var i = 0; i<filesToBeDeleted.length;i++){
-    const path = req.files[filesToBeDeleted[i]][0].path
-    fs.unlink(path, (err) => {
-        if (err) {
-          console.error(err)
-          return;
-        }
-        console.log('image and video removed')
-      })
-    console.log('file is saved')
-    }
-    res.redirect('/all_latest_posts')
-})
-.catch((err)=>{
-    console.log(err)
-})
-}
-else{ 
 
-    const saveToppost = new Toppost({
-        img:{
-        data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
-        contentType:"image/png"
-        },
-        title:req.body.title,
-        body:req.body.body,
-        body2:req.body.body2,
-        category:req.body.category,
-        link:link,
-        lead:finalLead
-    })
-    saveToppost.save()
-   console.log('post is included in top news')
-   const saveLatestpost = new Latestpost({
-    img:{
-        data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
-        contentType:"image/png"
-        },
-        title:req.body.title,
-        body:req.body.body,
-        body2:req.body.body2,
-        category:req.body.category,
-        link:link,
-        lead:finalLead
-})
-saveLatestpost.save()
-.then(()=>{
+    const { newsImage, newsVideo } = req.files;
+    const { title, body, body2, category } = req.body;
+    const newsLead_array =body.split(' ').splice(0,12);
+    const finalLead = newsLead_array.join(' ');
+
     
-    const filesToBeDeleted = Object.keys(req.files)
-    for(var i = 0; i<filesToBeDeleted.length;i++){
-    const path = req.files[filesToBeDeleted[i]][0].path
-    fs.unlink(path, (err) => {
-        if (err) {
-          console.error(err)
-          return;
-        }
-        console.log('image and video removed')
-      })
+    if(req.body.tpost=="toppost"){
+
+        const imageRefs = newsImage.map(file => ({
+        filename: file.filename,
+        contentType: file.mimetype,
+        bucketName: 'uploads'
+          }));
+
+          var videoRefs;
+
+          if(newsVideo !== undefined){
+            videoRefs = newsVideo.map(file => ({
+            filename: file.filename,
+            contentType: file.mimetype,
+            bucketName: 'uploads' 
+                }));
+            }else{
+            videoRefs = []
+            }
+
+        const newPost = new Latestpost({
+        images: imageRefs,
+        videos: videoRefs,
+        link:link,
+        title,
+        lead: finalLead,
+        body,
+        body2,
+        category
+        });
+      
+          await newPost.save()
+          .then(()=>{
+            console.log("successfully saved in latest post")
+          })
+
+        const newPost2 = new Toppost({
+        images: imageRefs,
+        videos: videoRefs,
+        link: link,
+        title,
+        lead: finalLead,
+        body,
+        body2,
+        category
+        });
+
+        await newPost2.save()
+        .then(()=>{
+            console.log("post succesfully included in top post")
+        })
+
+    return res.redirect('/all_latest_posts')
     }
-    console.log('file is saved')
-    res.redirect('/all_latest_posts')
-})
-.catch((err)=>{
-    console.log(err)
+    else{
+
+        const imageRefs = newsImage.map(file => ({
+        filename: file.filename,
+        contentType: file.mimetype,
+        bucketName: 'uploads'
+            }));
+        if(newsVideo !== undefined){
+        videoRefs = newsVideo.map(file => ({
+        filename: file.filename,
+        contentType: file.mimetype,
+        bucketName: 'uploads' 
+            }));
+        }else{
+        videoRefs = []
+        }
+        const newPost = new Latestpost({
+        images: imageRefs,
+        videos: videoRefs,
+        link:link,
+        title,
+        lead: finalLead,
+        body,
+        body2,
+        category
+        });
+        
+        await newPost.save()
+        .then(()=>{
+        console.log("successfully saved in latest post")
+        })
+        return res.redirect('/all_latest_posts')
+    }
+
 })
 
-}
 
-}
-else{
-     
-    if(req.files['newsVideo'] !== undefined && req.files['addnewsImage'] !== undefined ){
-    const saveLatestpost = new Latestpost({
-        img:{
-            data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
-            contentType:"image/png"
-            },
-            img2:{
-                data: fs.readFileSync('uploads/' + req.files['addnewsImage'][0].filename),
-                contentType:"image/png"
-                },
-            vid:{
-                data: fs.readFileSync('uploads/' + req.files['newsVideo'][0].filename),
-                contentType:"image/png"
-                },
-            title:req.body.title,
-            body:req.body.body,
-            body2:req.body.body2,
-            category:req.body.category,
-            link:link,
-            lead:finalLead
-    })
-    saveLatestpost.save()
-    .then(()=>{
-        const filesToBeDeleted = Object.keys(req.files)
-    for(var i = 0; i<filesToBeDeleted.length;i++){
-    const path = req.files[filesToBeDeleted[i]][0].path
-    fs.unlink(path, (err) => {
-        if (err) {
-          console.error(err)
-          return;
-        }
-        console.log('image and video removed')
-      })
-    }
-        console.log('file is saved')
-        res.redirect('/all_latest_posts')
-        
-    })
-    .catch((err)=>{
-        console.log(err)
-    })
-}
-else if(req.files['newsVideo'] !== undefined && req.files['addnewsImage'] == undefined){
-    const saveLatestpost = new Latestpost({
-        img:{
-            data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
-            contentType:"image/png"
-            },
-            vid:{
-                data: fs.readFileSync('uploads/' + req.files['newsVideo'][0].filename),
-                contentType:"image/png"
-                },
-            title:req.body.title,
-            body:req.body.body,
-            body2:req.body.body2,
-            category:req.body.category,
-            link:link,
-            lead:finalLead
-    })
-    saveLatestpost.save()
-    .then(()=>{
-        const filesToBeDeleted = Object.keys(req.files)
-    for(var i = 0; i<filesToBeDeleted.length;i++){
-    const path = req.files[filesToBeDeleted[i]][0].path
-    fs.unlink(path, (err) => {
-        if (err) {
-          console.error(err)
-          return;
-        }
-        console.log('image and video removed')
-      })
-    }
-        console.log('file is saved')
-        res.redirect('/all_latest_posts')
-        
-    })
-    .catch((err)=>{
-        console.log(err)
-    })
-}
-else if(req.files['newsVideo'] == undefined && req.files['addnewsImage'] !== undefined){
-    const saveLatestpost = new Latestpost({
-        img:{
-            data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
-            contentType:"image/png"
-            },
-            img2:{
-                data: fs.readFileSync('uploads/' + req.files['addnewsImage'][0].filename),
-                contentType:"image/png"
-                },
-            title:req.body.title,
-            body:req.body.body,
-            body2:req.body.body2,
-            category:req.body.category,
-            link:link,
-            lead:finalLead
-    })
-    saveLatestpost.save()
-    .then(()=>{
-        const filesToBeDeleted = Object.keys(req.files)
-    for(var i = 0; i<filesToBeDeleted.length;i++){
-    const path = req.files[filesToBeDeleted[i]][0].path
-    fs.unlink(path, (err) => {
-        if (err) {
-          console.error(err)
-          return;
-        }
-        console.log('image and video removed')
-      })
-    }
-        console.log('file is saved')
-        res.redirect('/all_latest_posts')
-        
-    })
-    .catch((err)=>{
-        console.log(err)
-    })
-}
-else{
+router.get('/stream/:filename',  (req, res) => {
+    
 
-    const saveLatestpost = new Latestpost({
-        img:{
-            data: fs.readFileSync('uploads/' + req.files['newsImage'][0].filename),
-            contentType:"image/png"
-            },
-            title:req.body.title,
-            body:req.body.body,
-            body2:req.body.body2,
-            category:req.body.category,
-            link:link,
-            lead:finalLead
-    })
-    saveLatestpost.save()
-    .then(()=>{
-        const filesToBeDeleted = Object.keys(req.files)
-    for(var i = 0; i<filesToBeDeleted.length;i++){
-    const path = req.files[filesToBeDeleted[i]][0].path
-    fs.unlink(path, (err) => {
-        if (err) {
-          console.error(err)
-          return;
-        }
-        console.log('image and video removed')
-      })
-    }
-        console.log('file is saved')
-        res.redirect('/all_latest_posts');
-    })
-    .catch((err)=>{
-        console.log(err)
-    })
-}
-}
-})
+            const readStream = gridfsBucket.openDownloadStreamByName(req.params.filename);
+            readStream.pipe(res);
+        
+ 
+});
+
+ 
+
+
+
+ 
+
 
 
 
@@ -507,7 +265,7 @@ router.get('', async(req,res)=>{
         const educatioN = await Latestpost.aggregate([{$match: {category:"education"}},{$sort:{createdAt:-1}}, {$skip: 0}, {$limit: 8}])
         const entertainmenT = await Latestpost.aggregate([{$match: {category:"entertainment"}}, {$sort:{createdAt:-1}}, {$skip: 0}, {$limit: 8}])
         const sportS = await Latestpost.aggregate([{$match: {category:"sports"}}, {$sort:{createdAt:-1}}, {$skip: 0}, {$limit: 8}])
-         
+        
         return res.render('index',{locals, data,topP, politicS, educatioN, entertainmenT, sportS});
     }catch(error){
         console.log(error)
@@ -520,25 +278,38 @@ router.get('', async(req,res)=>{
 router.get('/latestpost/:id', async(req,res)=>{
     const slug =req.params.id;
     const data = await Latestpost.findById({_id:slug});
+    if(data){
     const related = data.category;
     const result = await Latestpost.find({$and:
         [{category:related},
          { _id: { $ne: slug } }]}).sort({createdAt:-1}).skip(0).limit(4).exec();
 
     return res.render('latestpost',{data,result})
-   
+        }
+        else{
+            return res.status(404).json({
+                error:"page no found"
+            })  
+        }
 })
 
 
 router.get('/toppost/:id', async(req,res)=>{
     const slug =req.params.id;
     const data = await Toppost.findById({_id:slug});
+    if(data){
     const related = data.category;
     const result = await Toppost.find({$and:
         [{category:related},
          { _id: { $ne: slug } }]}).sort({createdAt:-1}).skip(0).limit(4).exec();
 
     return res.render('toppost',{data,result})
+        }
+        else{
+            return res.status(404).json({
+                error:"page no found"
+            })
+        }
    
 })
 
@@ -859,92 +630,142 @@ router.get('/more_topnews', async(req,res)=>{
 router.get('/entertainment/:id', async(req,res)=>{
     const slug =req.params.id;
     const data = await Latestpost.findById({_id:slug});
+    if(data){
     const related = data.category;
     const result = await Latestpost.find({$and:
         [{category:related},
          { _id: { $ne: slug } }]}).sort({createdAt:-1}).skip(0).limit(4).exec();
 
     return res.render('entertainment',{data,result})
-   
+    }
+    else{
+        return res.status(404).json({
+            error:"page no found"
+        })
+    }
 })
 router.get('/technology/:id', async(req,res)=>{
     const slug =req.params.id;
     const data = await Latestpost.findById({_id:slug});
+    if(data){
     const related = data.category;
     const result = await Latestpost.find({$and:
         [{category:related},
          { _id: { $ne: slug } }]}).sort({createdAt:-1}).skip(0).limit(4).exec();
 
     return res.render('technology',{data,result})
-   
+        }
+        else{
+            return res.status(404).json({
+                error:"page no found"
+            })
+        }
 })
 router.get('/business/:id', async(req,res)=>{
     const slug =req.params.id;
     const data = await Latestpost.findById({_id:slug});
+    if(data){
     const related = data.category;
     const result = await Latestpost.find({$and:
         [{category:related},
          { _id: { $ne: slug } }]}).sort({createdAt:-1}).skip(0).limit(4).exec();
 
     return res.render('business',{data,result})
-   
+        }
+        else{
+            return res.status(404).json({
+                error:"page no found"
+            })
+        }
 })
 router.get('/economy/:id', async(req,res)=>{
     const slug =req.params.id;
     const data = await Latestpost.findById({_id:slug});
+    if(data){
     const related = data.category;
     const result = await Latestpost.find({$and:
         [{category:related},
          { _id: { $ne: slug } }]}).sort({createdAt:-1}).skip(0).limit(4).exec();
 
     return res.render('economy',{data,result})
-   
+        }
+        else{
+            return res.status(404).json({
+                error:"page no found"
+            })
+        }
 })
 
 router.get('/education/:id', async(req,res)=>{
     const slug =req.params.id;
     const data = await Latestpost.findById({_id:slug});
+    if(data){
     const related = data.category;
     const result = await Latestpost.find({$and:
         [{category:related},
          { _id: { $ne: slug } }]}).sort({createdAt:-1}).skip(0).limit(4).exec();
 
     return res.render('education',{data,result})
-   
+        }
+        else{
+            return res.status(404).json({
+                error:"page no found"
+            })
+        }
 })
 
 router.get('/politics/:id', async(req,res)=>{
     const slug =req.params.id;
     const data = await Latestpost.findById({_id:slug});
+    if(data){
     const related = data.category;
     const result = await Latestpost.find({$and:
         [{category:related},
          { _id: { $ne: slug } }]}).sort({createdAt:-1}).skip(0).limit(4).exec();
 
     return res.render('politics',{data,result})
-   
+        }
+        else{
+            return res.status(404).json({
+                error:"page no found"
+            })
+        }
 })
 
 router.get('/sports/:id', async(req,res)=>{
     const slug =req.params.id;
     const data = await Latestpost.findById({_id:slug});
+    if(data){
     const related = data.category;
     const result = await Latestpost.find({$and:
         [{category:related},
          { _id: { $ne: slug } }]}).sort({createdAt:-1}).skip(0).limit(4).exec();
 
     return res.render('sports',{data,result})
+    }
+    else{
+        return res.status(404).json({
+            error:"page no found"
+        })
+    }
    
 })
 router.get('/search/:id', async(req,res)=>{
     const slug =req.params.id;
     const data = await Latestpost.findById({_id:slug});
+    if(data){
     const related = data.category;
     const result = await Latestpost.find({$and:
         [{category:related},
          { _id: { $ne: slug } }]}).sort({createdAt:-1}).skip(0).limit(4).exec();
 
     return res.render('search',{data,result})
+        }
+        else{
+            return res.status(404).json({
+                error:"page no found"
+            })
+        }
    
 })
 router.get('/about', async(req,res)=>{
@@ -956,6 +777,55 @@ router.get('/contact', async(req,res)=>{
    
     return res.render('contact')
    
+})
+
+router.get('/deletetop/:id', async(req,res)=>{
+    try{
+ 
+        const slug = req.params.id;
+        const data = await Toppost.findOne({_id : slug})
+        if(data){
+        const gfname = data.images[0].filename
+        const compareData = await Latestpost.findOne({title: data.title})
+        if(!compareData){
+        const fmatch = await gfs.files.findOne({filename : gfname})
+        gridfsBucket.delete(fmatch._id)
+        .then(()=>{
+           console.log('file deleted')
+        })
+        } 
+       
+       await Toppost.deleteOne({_id:slug});
+       res.redirect('/all_top_posts')
+    }
+    }
+    catch(err){
+        console.log(err)
+    }
+})
+router.get('/delete/:id',async(req,res)=>{
+    try{
+ 
+ const slug = req.params.id;
+ const data = await Latestpost.findOne({_id : slug})
+ if(data){
+ const gfname = data.images[0].filename
+ const compareData = await Toppost.findOne({title: data.title})
+ if(!compareData){
+ const fmatch = await gfs.files.findOne({filename : gfname})
+ gridfsBucket.delete(fmatch._id)
+ .then(()=>{
+    console.log('file deleted')
+ })
+ } 
+
+await Latestpost.deleteOne({_id:slug});
+    res.redirect('/all_latest_posts')
+    }
+}
+    catch(error){
+        console.log(error)
+    }
 })
 
 
