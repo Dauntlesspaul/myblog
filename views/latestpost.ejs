@@ -25,9 +25,11 @@
  
 
 <div class="vid_container">
- <video width="320" height="240"  controls>
+ <video autoplay muted playsinline controls>
   <source src="/stream/<%= data.videos[0].filename %>" type="video/mp4">
-  <source src="movie.ogg" type="video/ogg">
+  <source src="/stream/<%= data.videos[0].filename %>" type="video/ogg">
+  <source src="/stream/<%= data.videos[0].filename %>" type="video/webm">
+  Your browser does not support the video tag.
 </video>
 </div>
 
