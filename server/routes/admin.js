@@ -6,7 +6,8 @@ const jwt = require('jsonwebtoken')
 const fs = require('fs');
 const Latestpost = require('../models/post');
 const Toppost = require('../models/topnews')
-const Users = require('../models/users')
+const Users = require('../models/users');
+const { GridFsStorage } = require('multer-gridfs-storage');
 
 const adminLayout='../views/layouts/admin'
 const jwtSecret = process.env.JWT_SECRET
@@ -78,13 +79,17 @@ router.post('/repost/:id',async(req,res)=>{
           }
 
        const slug = req.params.id
-      await Latestpost.findOneAndUpdate({_id:slug},{$set: {
+       const data = await Latestpost.findById({_id:slug});
+       const data2 = await Toppost.findById({_id: slug});
+       if(data ){
+
+      await Latestpost.findOneAndUpdate({title:data.title},{$set: {
            title:req.body.title,
            link:link,
            body:req.body.body,
            body2:req.body.body2
        }})
-       await Toppost.findOneAndUpdate({_id:slug},{$set: {
+       await Toppost.findOneAndUpdate({title:data.title},{$set: {
         title:req.body.title,
         link:link,
         body:req.body.body,
@@ -94,6 +99,30 @@ router.post('/repost/:id',async(req,res)=>{
            console.log('file is updated')
            res.redirect('/all_latest_posts');
        })
+    }
+    else if(data2){
+        await Latestpost.findOneAndUpdate({title:data2.title},{$set: {
+            title:req.body.title,
+            link:link,
+            body:req.body.body,
+            body2:req.body.body2
+        }})
+        await Toppost.findOneAndUpdate({title:data2.title},{$set: {
+         title:req.body.title,
+         link:link,
+         body:req.body.body,
+         body2:req.body.body2
+     }})
+        .then(()=>{
+            console.log('file is updated')
+            res.redirect('/all_top_posts');
+        })
+    }
+    else{
+        return res.status(404).json({
+            error:'page not found'
+        })
+    }
     }
     catch(error){
        console.log(error)
@@ -169,38 +198,43 @@ router.get('/all_top_posts', authMiddleware, async(req,res)=>{
         console.log(error)
     }
 })
-router.get('/deletetop/:id', authMiddleware,async(req,res)=>{
-    try{
- 
- const slug = req.params.id;
-await Toppost.deleteOne({_id:slug});
-    res.redirect('/all_latest_posts')
-    }
-    catch(error){
-        console.log(error)
-    }
-})
-router.get('/delete/:id', authMiddleware,async(req,res)=>{
-    try{
- 
- const slug = req.params.id;
-await Latestpost.deleteOne({_id:slug});
-    res.redirect('/all_latest_posts')
-    }
-    catch(error){
-        console.log(error)
-    }
-})
+
+
 router.get('/alllatestposts/:id',authMiddleware, async(req,res)=>{
     const locals = {
         hide2:"blank2"
     }
     const slug =req.params.id;
     const data = await Latestpost.findById({_id:slug});
+    if(data){
     return res.render('admin/adminlatestposts',{data,
         layout: adminLayout,
     locals})
-        
+    }else{
+        return res.status(404).json({
+            error:"page not found"
+        })
+    }  
+})
+router.get('/edittop/:id',authMiddleware,async(req,res)=>{
+    try{
+        const locals = {
+            hide2:"blank2"
+        }
+        const slug = req.params.id;
+        const data = await Toppost.findById({_id:slug})
+        if(data){
+     return res.render('admin/edit',{data, layout: adminLayout,
+        locals})
+     }else{
+        return res.status(404).json({
+            error:"page not found"
+        })
+     }
+    }
+    catch(error){
+        console.log(error)
+    }
 })
 router.get('/edit/:id',authMiddleware,async(req,res)=>{
     try{
@@ -209,8 +243,14 @@ router.get('/edit/:id',authMiddleware,async(req,res)=>{
         }
         const slug = req.params.id;
         const data = await Latestpost.findById({_id:slug})
+        if(data){
      return res.render('admin/edit',{data, layout: adminLayout,
         locals})
+     }else{
+        return res.status(404).json({
+            error:"page not found"
+        })
+     }
     }
     catch(error){
         console.log(error)
@@ -222,10 +262,15 @@ router.get('/alltopposts/:id', authMiddleware, async(req,res)=>{
     }
     const slug =req.params.id;
     const data = await Toppost.findById({_id:slug});
+    if(data){
     return res.render('admin/admintopposts',{data,
         layout: adminLayout,
     locals})
-        
+    }else{
+        return res.status(404).json({
+            error:"page not found"
+        })
+    }   
 })
 router.get('/logout',async(req,res)=>{
  res.clearCookie('token')

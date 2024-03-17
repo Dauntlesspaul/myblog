@@ -3,13 +3,14 @@ const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const bodyParser = require('body-parser');
 const cors = require('cors')
-const connectDB = require('./server/config/db')
+const {connectDB} = require('./server/config/db')
 const cookieParser = require('cookie-parser')
 const MongoStore = require('connect-mongo')
 const session = require('express-session')
+const methodOverride = require('method-override')
 const app = express();
-const PORT = process.env.PORT || 800;
-connectDB.connectDB();
+const PORT = process.env.PORT || 8000;
+connectDB();
 
 app.use(cookieParser());
 app.use(session({
@@ -20,6 +21,7 @@ app.use(session({
 })
 
 )
+app.use(methodOverride('_method'));
 app.use(express.urlencoded({extended:true}));
 app.use(express.json())
 app.use(bodyParser.json());
