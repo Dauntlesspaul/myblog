@@ -187,32 +187,13 @@ router.get('/stream/:filename',  (req, res) => {
  
 });
 
- 
-
-
-
- 
-
-
-
-
-
-
-
-           
-
-
-
-
-
-
-
-
-
 
 router.post('/search',async(req,res)=>{
+    const locals={
+        text: 'No result found'
+    }
     const searchTerm = req.body.searchValue
-    const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9]/,"")
+    const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9 \s]/,"")
     let perPage=12
     let page= parseInt(req.query.page) || 1;
     let beforePage =page -1;
@@ -236,18 +217,11 @@ router.post('/search',async(req,res)=>{
         beforePage,
         afterPage,
         totalPages,
-        page
+        page,
+        locals
     })
    
 })
-
-
-
-
-
-
-
-
 
 
 router.get('', async(req,res)=>{
@@ -271,8 +245,6 @@ router.get('', async(req,res)=>{
         console.log(error)
     }
 })
-
-
 
 
 router.get('/latestpost/:id', async(req,res)=>{
@@ -312,8 +284,6 @@ router.get('/toppost/:id', async(req,res)=>{
         }
    
 })
-
-
 
 
 router.get('/more_latestnews', async(req,res)=>{
