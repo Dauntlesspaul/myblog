@@ -70,8 +70,11 @@ router.post('/repost/:id',async(req,res)=>{
         const regTest = regexHttp.test(str)
         const regTest2 = regexHttp2.test(str)
         var link;
+        const body = req.body.body
+        const newsLead_array =body.split(' ').splice(0,12);
+        const finalLead = newsLead_array.join(' ');
         
-        if(!regTest && !regTest){
+        if(!regTest && !regTest2){
             link ="https://www."+str
         }
        else if(regTest){
@@ -86,13 +89,15 @@ router.post('/repost/:id',async(req,res)=>{
       await Latestpost.findOneAndUpdate({title:data.title},{$set: {
            title:req.body.title,
            link:link,
-           body:req.body.body,
+           body:body,
+           lead:finalLead,
            body2:req.body.body2
        }})
        await Toppost.findOneAndUpdate({title:data.title},{$set: {
         title:req.body.title,
         link:link,
-        body:req.body.body,
+        body:body,
+        lead:finalLead,
         body2:req.body.body2
     }})
        .then(()=>{
@@ -104,12 +109,14 @@ router.post('/repost/:id',async(req,res)=>{
         await Latestpost.findOneAndUpdate({title:data2.title},{$set: {
             title:req.body.title,
             link:link,
+            lead:finalLead,
             body:req.body.body,
             body2:req.body.body2
         }})
         await Toppost.findOneAndUpdate({title:data2.title},{$set: {
          title:req.body.title,
          link:link,
+         lead:finalLead,
          body:req.body.body,
          body2:req.body.body2
      }})

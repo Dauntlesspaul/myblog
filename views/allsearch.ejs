@@ -25,7 +25,11 @@
     </div> 
     
 
+<% if (data.length==0) { %>
 
+   <div style="width: 100%;display: flex;justify-content: center; margin: 10px 0;"><span style="color: rgb(177, 22, 5);"><%= locals.text %></span></div>
+ 
+<% } %>
 
     <div class="pagination">
      
