@@ -288,7 +288,7 @@ router.get('/toppost/:id', async(req,res)=>{
 
 router.get('/more_latestnews', async(req,res)=>{
     let perPage=8
-    let page= parseInt(req.query.page) || 2;
+    let page= Number(req.query.page) || 2;
     let beforePage =page -1;
     let afterPage = page + 1;
     const data = await Latestpost.aggregate([{$sort:{createdAt:-1}}])
@@ -297,6 +297,26 @@ router.get('/more_latestnews', async(req,res)=>{
     let totalPost = await Latestpost.countDocuments() - 8;
     let totalPages = Math.ceil(totalPost/perPage)
     return res.render('morelatest',{data,
+    page,
+    perPage,
+    totalPages,
+    beforePage,
+    afterPage
+    })
+   
+})
+
+router.get('/more_topnews', async(req,res)=>{
+    let perPage=6
+    let page= parseInt(req.query.page) || 2;
+    let beforePage =page -1;
+    let afterPage = page + 1;
+    const data = await Toppost.aggregate([{$sort:{createdAt:-1}}])
+    .skip(perPage * page - perPage).limit(perPage).exec()
+
+    let totalPost = await Toppost.countDocuments() - 6;
+    let totalPages = Math.ceil(totalPost/perPage)
+    return res.render('moretop',{data,
     page,
     perPage,
     totalPages,
@@ -346,6 +366,8 @@ router.get('/more_entertainment', async(req,res)=>{
     })
    
 })
+
+
 
 router.get('/more_politics', async(req,res)=>{
     let perPage=8
@@ -570,30 +592,6 @@ router.get('/alleducation', async(req,res)=>{
     })
    
 })
-
-
-
-router.get('/more_topnews', async(req,res)=>{
-    let perPage=6
-    let page= parseInt(req.query.page) || 2;
-    let beforePage =page -1;
-    let afterPage = page + 1;
-    const data = await Toppost.aggregate([{$sort:{createdAt:-1}}])
-    .skip(perPage * page - perPage).limit(perPage).exec()
-
-    let totalPost = await Toppost.countDocuments() - 6;
-    let totalPages = Math.ceil(totalPost/perPage)
-  
-    return res.render('moretop',{data,
-    page,
-    perPage,
-    totalPages,
-    beforePage,
-    afterPage
-    })
-   
-})
-
 
 
 

@@ -35,7 +35,7 @@
   
  <script>
     document.addEventListener('DOMContentLoaded',function(){ 
-    document.getElementById('paga').innerHTML =` <li class="prev"><span><a href="/more_latestnews/?page=<%=beforePage%>" <i class="fa-solid fa-angles-left"></i></a></span></li>`;
+    document.getElementById('paga').innerHTML =` <li class="prev"><span><a href="/more_latestnews/?page=<%=beforePage%>"> <i class="fa-solid fa-angles-left"></i></a></span></li>`;
        })
        </script>
  <% } %>
@@ -110,14 +110,14 @@
 
 
 
-<% if (page<totalPages) { %>
-  
-    <script>
-       document.addEventListener('DOMContentLoaded',function(){ 
-       document.getElementById('paga').innerHTML +=`  <li style="margin-left: 3px;" class="next"><span><a href="/more_latestnews/?page=<%=afterPage%>"<i class="fa-solid fa-angles-right"></i></span</li>`;
-          })
-          </script>
-           <% } %>  
+   <% if (page<totalPages) { %>
+ 
+      <script>
+         document.addEventListener('DOMContentLoaded',function(){ 
+         document.getElementById('paga').innerHTML +=`  <li style="margin-left: 3px;" class="next"><span><a href="/more_latestnews/?page=<%=afterPage%>"><i class="fa-solid fa-angles-right"></i></a></span</li>`;
+            })
+            </script>
+             <% } %> 
         
       
 
