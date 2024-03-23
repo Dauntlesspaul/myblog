@@ -525,7 +525,6 @@ button{
     color: var(--general-bacground);
   }
   .prev{
-    margin-left: -35px;
     color: aliceblue;
   }
   .main_body{
@@ -584,17 +583,18 @@ button{
     margin-top: 15px;
   }
   .content_news{
-    font-family: 'Newsreader', serif;
     font-size: 18px; 
     font-weight: 400;
   }
   .content_newsh{
     color: black;
-    font-size: 22px;
+    font-size: 26px;
     line-height:25px;
     margin-bottom:2px;
-    font-family: 'Newsreader', serif; 
-
+    font-weight: 700;
+  }
+  figure span{
+    font-family: 'Poppins', sans-serif !important;
   }
   .vid_container{
     display:flex;

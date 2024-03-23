@@ -154,14 +154,13 @@ router.get('/all_latest_posts', authMiddleware, async(req,res)=>{
     }
     try{
         const perPage=10;
-        const page = req.query.page || 1;
+        const page = Number(req.query.page) || 1;
         const beforePage= page -1;
         const afterPage = page + 1;
         const data = await Latestpost.find().sort({createdAt:-1})
         .skip(perPage * page -perPage).limit(perPage).exec()
         let totalPost = await Latestpost.countDocuments();
         let totalPages = Math.ceil(totalPost/perPage)
-        
         return res.render('admin/alllatestposts',{locals,data,
         perPage,
         page,
@@ -183,7 +182,7 @@ router.get('/all_top_posts', authMiddleware, async(req,res)=>{
     }
     try{
         const perPage=10;
-        const page = req.query.page || 1;
+        const page = Number(req.query.page) || 1;
         const beforePage= page -1;
         const afterPage = page + 1;
         const data = await Toppost.find().sort({createdAt:-1})

@@ -34,7 +34,7 @@
   
  <script>
     document.addEventListener('DOMContentLoaded',function(){ 
-    document.getElementById('paga').innerHTML =` <li class="prev"><span><a href="/more_latestnews/?page=<%=beforePage%>" <i class="fa-solid fa-angles-left"></i></a></span></li>`;
+    document.getElementById('paga').innerHTML =` <li class="prev"><span><a href="/more_topnews/?page=<%=beforePage%>"> <i class="fa-solid fa-angles-left"></i></a></span></li>`;
        })
        </script>
  <% } %>
@@ -44,7 +44,7 @@
   
    <script>
       document.addEventListener('DOMContentLoaded',function(){ 
-      document.getElementById('paga').innerHTML +=` <a href="/more_latestnews/?page=2"><li class="num"><span>1</span></li></a>`;
+      document.getElementById('paga').innerHTML +=` <a href="/more_topnews/?page=2"><li class="num"><span>1</span></li></a>`;
          })
          </script>
 
@@ -73,7 +73,7 @@
 
         document.addEventListener('DOMContentLoaded',function(){ 
  
-        document.getElementById('paga').innerHTML +=`<a href="/more_latestnews/?page=<%=pageLength + 1%>"> <li class="num ${'<%=activeLi%>'}"><span>${'<%=pageLength%>'}</span></li></a>`;
+        document.getElementById('paga').innerHTML +=`<a href="/more_topnews/?page=<%=pageLength + 1%>"> <li class="num ${'<%=activeLi%>'}"><span>${'<%=pageLength%>'}</span></li></a>`;
            })
            </script>
 
@@ -106,17 +106,14 @@
 
 
 
-
-
-
-<% if (page<totalPages) { %>
-  
-    <script>
-       document.addEventListener('DOMContentLoaded',function(){ 
-       document.getElementById('paga').innerHTML +=`  <li style="margin-left: 3px;" class="next"><span><a href="/more_latestnews/?page=<%=afterPage%>"<i class="fa-solid fa-angles-right"></i></span</li>`;
-          })
-          </script>
-           <% } %>  
+   <% if (page<totalPages) { %>
+ 
+      <script>
+         document.addEventListener('DOMContentLoaded',function(){ 
+         document.getElementById('paga').innerHTML +=`  <li style="margin-left: 3px;" class="next"><span><a href="/more_topnews/?page=<%=afterPage%>"><i class="fa-solid fa-angles-right"></i></a></span</li>`;
+            })
+            </script>
+             <% } %> 
         
       
 <ul  id="paga" class="ul">
